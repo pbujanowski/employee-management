@@ -1,13 +1,16 @@
 ﻿using EmployeeManagement.Core.Models;
 using EmployeeManagement.Desktop.Enums;
+using EmployeeManagement.Desktop.Services;
 using EmployeeManagement.Services.Implementations;
 using EmployeeManagement.Services.Interfaces;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace EmployeeManagement.Desktop.ViewModels
@@ -16,7 +19,10 @@ namespace EmployeeManagement.Desktop.ViewModels
     {
         private string title;
         private Employee employee = new Employee();
+        private readonly IViewService viewService = ViewService.Instance;
         private readonly IEmployeeService<Employee> employeeService = new EmployeeService();
+        private readonly ICityService<City> cityService = new CityService();
+        private readonly IJobService<Job> jobService = new JobService();
         private DataMode dataMode;
 
         public string Title 
@@ -61,11 +67,7 @@ namespace EmployeeManagement.Desktop.ViewModels
 
         public bool CanJob { get { return false; } }
 
-        public List<Job> Jobs { get; private set; } = new List<Job>
-        {
-            new Job { Id = 1, Name = "dyrektor" },
-            new Job { Id = 2, Name = "pracownik szeregowy" }
-        };
+        public ObservableCollection<Job> Jobs { get; private set; }
 
         public string Address
         {
@@ -89,11 +91,7 @@ namespace EmployeeManagement.Desktop.ViewModels
 
         public bool CanCity { get { return true; } }
 
-        public List<City> Cities { get; private set; } = new List<City>
-        {
-            new City { Id = 1, Name = "Gliwice" },
-            new City { Id = 2, Name = "Knurów" }
-        };
+        public ObservableCollection<City> Cities { get; private set; }
 
         public string PostalCode
         {
@@ -139,6 +137,10 @@ namespace EmployeeManagement.Desktop.ViewModels
 
         public ICommand CancelEmployeeCommand { get; private set; }
 
+        public ICommand GetCitiesCommand { get; private set; }
+
+        public ICommand GetJobsCommand { get; private set; }
+
         private async void AcceptEmployee(object parameter)
         {
             switch (dataMode)
@@ -154,7 +156,31 @@ namespace EmployeeManagement.Desktop.ViewModels
 
         private void CancelEmployee(object parameter)
         {
-            //RaiseRequestClose(new DialogResult());
+            viewService.CloseDialog(nameof(EmployeeViewModel));
+        }
+
+        private async void GetCities(object parameter)
+        {
+            var cities = await cityService.GetAllAsync();
+            if (this.Cities == null)
+                this.Cities = new ObservableCollection<City>();
+            else
+                this.Cities.Clear();
+
+            foreach (var city in cities)
+                this.Cities.Add(city);
+        }
+
+        private async void GetJobs(object parameter)
+        {
+            var jobs = await jobService.GetAllAsync();
+            if (this.Jobs == null)
+                this.Jobs = new ObservableCollection<Job>();
+            else
+                this.Jobs.Clear();
+
+            foreach (var job in jobs)
+                this.Jobs.Add(job);
         }
 
         private void SetAddMode()
@@ -195,6 +221,8 @@ namespace EmployeeManagement.Desktop.ViewModels
         {
             AcceptEmployeeCommand = new RelayCommand<object>(AcceptEmployee);
             CancelEmployeeCommand = new RelayCommand<object>(CancelEmployee);
+            GetCitiesCommand = new RelayCommand<object>(GetCities);
+            GetJobsCommand = new RelayCommand<object>(GetJobs);
             SetAddMode();
         }
     }

@@ -20,7 +20,7 @@ namespace EmployeeManagement.Desktop.ViewModels
     public class EmployeesViewModel : ViewModelBase
     {
         private readonly IEmployeeService<Employee> employeeService = new EmployeeService();
-        private readonly IViewService viewService = new ViewService();
+        private readonly IViewService viewService = ViewService.Instance;
         private ObservableCollection<Employee> employees;
         private Employee selectedEmployee;
         //private readonly IDialogService dialogService;

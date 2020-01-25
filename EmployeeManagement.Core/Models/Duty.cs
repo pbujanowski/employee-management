@@ -13,6 +13,9 @@ namespace EmployeeManagement.Core.Models
         [Required]
         public int Id { get; set; }
 
+        [Required]
+        public string Description { get; set; }
+
         [ForeignKey(nameof(ExecutiveEmployee))]
         [Required]
         public int ExecutiveEmployeeId { get; set; }
@@ -20,9 +23,6 @@ namespace EmployeeManagement.Core.Models
         [Required]
         [JsonProperty(ItemIsReference = true)]
         public Employee ExecutiveEmployee { get; set; }
-
-        [Required]
-        public string Description { get; set; }
 
         [Required]
         public DateTime OrderDate { get; set; }
@@ -39,6 +39,7 @@ namespace EmployeeManagement.Core.Models
         [JsonConstructor]
         public Duty()
         {
+            OrderDate = DateTime.Now;
             Deadline = null;
             EndDate = null;
             IsDone = false;

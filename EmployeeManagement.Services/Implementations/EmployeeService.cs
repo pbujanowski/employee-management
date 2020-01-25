@@ -42,15 +42,5 @@ namespace EmployeeManagement.Services.Implementations
             return await HttpHelper.DoPutRequestAsync(HttpUrls.EmployeePath, item.Id, item)
                 .ConfigureAwait(false);
         }
-
-        public async Task<List<Job>> GetAllJobsAsync()
-        {
-            await Task.CompletedTask;
-            return new List<Job>
-            {
-                new Job { Id = 1, Name = "dyrektor" },
-                new Job { Id = 2, Name = "pracownik szeregowy" }
-            };
-        }
     }
 }

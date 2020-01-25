@@ -10,7 +10,7 @@ namespace EmployeeManagement.Desktop.ViewModels
 {
     public class ReportTemplatesViewModel : ViewModelBase
     {
-        private readonly IViewService viewService = new ViewService();
+        private readonly IViewService viewService = ViewService.Instance;
         private ObservableCollection<ReportTemplate> reportTemplates;
         private ReportTemplate selectedTemplate;
 

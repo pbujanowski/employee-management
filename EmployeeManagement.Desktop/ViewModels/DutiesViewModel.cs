@@ -1,4 +1,5 @@
 ﻿using EmployeeManagement.Core.Models;
+using EmployeeManagement.Desktop.Services;
 using EmployeeManagement.Services.Implementations;
 using EmployeeManagement.Services.Interfaces;
 using System;
@@ -14,6 +15,7 @@ namespace EmployeeManagement.Desktop.ViewModels
 {
     public class DutiesViewModel : ViewModelBase
     {
+        private readonly IViewService viewService = ViewService.Instance;
         private readonly IDutyService<Duty> dutyService = new DutyService();
         private ObservableCollection<Duty> duties;
         private Duty selectedDuty;
@@ -66,7 +68,7 @@ namespace EmployeeManagement.Desktop.ViewModels
 
         private void AddDuty(object parameter)
         {
-
+            viewService.ShowDialog(nameof(DutyViewModel));
         }
 
         private async void RefreshDutiesList(object parameter)

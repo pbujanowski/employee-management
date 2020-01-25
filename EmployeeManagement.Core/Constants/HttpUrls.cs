@@ -14,10 +14,14 @@ namespace EmployeeManagement.Core.Constants
         
         public const string EmployeePath = BaseUrl + "/employees/";
 
-        public const string UsersLoginPath = BaseUrl + "/users/login";
+        public const string JobPath = BaseUrl + "/jobs/";
 
-        public const string UsersRegisterPath = BaseUrl + "/users/register";
+        public const string CityPath = BaseUrl + "/cities/";
 
-        public const string ReportTemplatePath = BaseUrl + "/reporttemplates/gettemplatebycode";
+        public const string UsersLoginPath = BaseUrl + "/users/login/";
+
+        public const string UsersRegisterPath = BaseUrl + "/users/register/";
+
+        public const string ReportTemplatePath = BaseUrl + "/reporttemplates/gettemplatebycode/";
     }
 }
