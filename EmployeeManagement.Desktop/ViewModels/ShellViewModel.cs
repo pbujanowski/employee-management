@@ -1,32 +1,44 @@
-﻿using EmployeeManagement.Desktop.Constants;
-using Prism.Mvvm;
-using Prism.Regions;
+﻿using System.Windows;
+using System.Windows.Input;
 
 namespace EmployeeManagement.Desktop.ViewModels
 {
-    public class ShellViewModel : BindableBase
+    public class ShellViewModel : ViewModelBase
     {
-        private readonly IRegionManager regionManager;
-        private string _title = "Zarządzanie kadrą pracowniczą";
+        //private readonly IDialogService dialogService;
+        private string title = "Zarządzanie kadrą pracowniczą";
+
+        public ICommand ShowLoginViewCommand { get; private set; }
+
         public string Title
         {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
+            get { return title; }
+            set 
+            {
+                title = value;
+                NotifyPropertyChanged(nameof(Title));
+            }
         }
 
-        private void RegisterViewsWithRegions()
+        public string CurrentUserInfo
         {
-            regionManager.RegisterViewWithRegion(Regions.TopPanelRegion, typeof(Views.TopPanelView));
-            regionManager.RegisterViewWithRegion(Regions.MainRegion, typeof(Views.MainView));
-            regionManager.RegisterViewWithRegion(Regions.EmployeesRegion, typeof(Views.EmployeesView));
-            regionManager.RegisterViewWithRegion(Regions.DutiesRegion, typeof(Views.DutiesView));
-            regionManager.RegisterViewWithRegion(Regions.ScheduleRegion, typeof(Views.ScheduleView));
+            get
+            {
+                if (App.CurrentUser != null)
+                    return $"Witaj, {App.CurrentUser.Id}!";
+                else
+                    return "Niezalogowano";
+            }
         }
 
-        public ShellViewModel(IRegionManager regionManager)
+        private void ShowLoginView(object parameter)
         {
-            this.regionManager = regionManager;
-            RegisterViewsWithRegions();
+            //dialogService.ShowDialog("LoginView", null, null);
+        }
+
+        public ShellViewModel()
+        {
+            ShowLoginViewCommand = new RelayCommand<object>(ShowLoginView);
         }
     }
 }

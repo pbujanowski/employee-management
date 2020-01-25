@@ -1,22 +1,56 @@
 ﻿<Window x:Class="EmployeeManagement.Desktop.Views.ShellView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:constants="clr-namespace:EmployeeManagement.Desktop.Constants"
-        xmlns:prism="http://prismlibrary.com/"
-        prism:ViewModelLocator.AutoWireViewModel="True"
-        Title="{Binding Title}" Height="720" Width="1280" >
+        xmlns:app="clr-namespace:EmployeeManagement.Desktop"
+        xmlns:vm="clr-namespace:EmployeeManagement.Desktop.ViewModels"
+        Title="{Binding Title}"
+        MinHeight="768" MinWidth="1024"
+        Height="768" Width="1024">
+    <Window.DataContext>
+        <vm:ShellViewModel />
+    </Window.DataContext>
     <DockPanel>
-        <ContentControl DockPanel.Dock="Top" prism:RegionManager.RegionName="{x:Static constants:Regions.TopPanelRegion}"/>
-        <TabControl DockPanel.Dock="Top">
-            <TabItem Header="Strona główna">
-                <ContentControl prism:RegionManager.RegionName="{x:Static constants:Regions.MainRegion}"/>
-            </TabItem>
-            <TabItem Header="Pracownicy">
-                <ContentControl prism:RegionManager.RegionName="{x:Static constants:Regions.EmployeesRegion}"/>
-            </TabItem>
-            <TabItem Header="Obowiązki">
-                <ContentControl prism:RegionManager.RegionName="{x:Static constants:Regions.DutiesRegion}"/>
-            </TabItem>
-        </TabControl>
+        <Border DockPanel.Dock="Top" Height="50" Padding="0">
+            <Grid>
+                <GroupBox Grid.Column="4" Padding="6" >
+                    <GroupBox Content="{Binding CurrentUserInfo, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Margin="3" />
+                </GroupBox>
+            </Grid>
+        </Border>
+        <GroupBox DockPanel.Dock="Top" Margin="3" Padding="6">
+            <TabControl>
+                <TabItem Header="Strona główna">
+                    <ContentControl>
+                        <vm:MainViewModel />
+                    </ContentControl>
+                </TabItem>
+                <TabItem Header="Pracownicy">
+                    <ContentControl>
+                        <vm:EmployeesViewModel />
+                    </ContentControl>
+                </TabItem>
+                <TabItem Header="Obowiązki">
+                    <ContentControl>
+                        <vm:DutiesViewModel />
+                    </ContentControl>
+                </TabItem>
+                <TabItem Header="Grafik">
+                    <ContentControl>
+                        <vm:ScheduleViewModel />
+                    </ContentControl>
+                </TabItem>
+                <TabItem Header="Raporty">
+                    <ContentControl>
+                        <vm:ReportsViewModel />
+                    </ContentControl>
+                </TabItem>
+                <TabItem Header="Szablony raportów">
+                    <ContentControl>
+                        <vm:ReportTemplatesViewModel />
+                    </ContentControl>
+                </TabItem>
+            </TabControl>
+        </GroupBox>
+        
     </DockPanel>
 </Window>

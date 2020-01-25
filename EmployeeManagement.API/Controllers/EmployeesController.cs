@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using EmployeeManagement.API.Data;
 using EmployeeManagement.Core.Models;
 using Newtonsoft.Json;
-using EmployeeManagement.Core.Services;
+using EmployeeManagement.Services.Interfaces;
 
 namespace EmployeeManagement.API.Controllers
 {
@@ -36,7 +36,7 @@ namespace EmployeeManagement.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Employee>> GetEmployee(int id)
         {
-            var employee = await context.Employee.FindAsync(id).ConfigureAwait(false);
+            var employee = await context.Employees.FindAsync(id).ConfigureAwait(false);
 
             if (employee == null)
             {
@@ -79,7 +79,7 @@ namespace EmployeeManagement.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
         {
-            context.Employee.Add(employee);
+            context.Employees.Add(employee);
             await context.SaveChangesAsync();
 
             return CreatedAtAction("GetEmployee", new { id = employee.Id }, employee);
@@ -89,13 +89,13 @@ namespace EmployeeManagement.API.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Employee>> DeleteEmployee(int id)
         {
-            var employee = await context.Employee.FindAsync(id);
+            var employee = await context.Employees.FindAsync(id);
             if (employee == null)
             {
                 return NotFound();
             }
 
-            context.Employee.Remove(employee);
+            context.Employees.Remove(employee);
             await context.SaveChangesAsync();
 
             return employee;
@@ -103,7 +103,7 @@ namespace EmployeeManagement.API.Controllers
 
         private bool EmployeeExists(int id)
         {
-            return context.Employee.Any(e => e.Id == id);
+            return context.Employees.Any(e => e.Id == id);
         }
     }
 }

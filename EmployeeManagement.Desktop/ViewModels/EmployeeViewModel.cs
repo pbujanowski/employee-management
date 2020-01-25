@@ -1,21 +1,33 @@
 ﻿using EmployeeManagement.Core.Models;
-using EmployeeManagement.Core.Services;
 using EmployeeManagement.Desktop.Enums;
-using Prism.Commands;
-using Prism.Mvvm;
-using Prism.Services.Dialogs;
+using EmployeeManagement.Services.Implementations;
+using EmployeeManagement.Services.Interfaces;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Windows.Input;
 
 namespace EmployeeManagement.Desktop.ViewModels
 {
-    public class EmployeeViewModel : DialogViewModelBase
+    public class EmployeeViewModel : ViewModelBase
     {
-        private Employee employee;
-        private readonly IEmployeeService<Employee> employeeService;
+        private string title;
+        private Employee employee = new Employee();
+        private readonly IEmployeeService<Employee> employeeService = new EmployeeService();
         private DataMode dataMode;
+
+        public string Title 
+        { 
+            get { return title; }
+            set
+            {
+                title = value;
+                NotifyPropertyChanged(nameof(Title));
+            }
+        }
 
         public string FirstName
         {
@@ -23,7 +35,7 @@ namespace EmployeeManagement.Desktop.ViewModels
             set
             {
                 employee.FirstName = value;
-                RaisePropertyChanged(nameof(FirstName));
+                NotifyPropertyChanged(nameof(FirstName));
             }
         }
 
@@ -33,23 +45,65 @@ namespace EmployeeManagement.Desktop.ViewModels
             set
             {
                 employee.LastName = value;
-                RaisePropertyChanged(nameof(LastName));
+                NotifyPropertyChanged(nameof(LastName));
             }
         }
 
-        public string Job
+        public Job Job
         {
             get { return employee.Job; }
             set
             {
                 employee.Job = value;
-                RaisePropertyChanged(nameof(Job));
+                NotifyPropertyChanged(nameof(Job));
             }
         }
 
         public bool CanJob { get { return false; } }
 
-        public List<string> Jobs { get; private set; }
+        public List<Job> Jobs { get; private set; } = new List<Job>
+        {
+            new Job { Id = 1, Name = "dyrektor" },
+            new Job { Id = 2, Name = "pracownik szeregowy" }
+        };
+
+        public string Address
+        {
+            get { return employee.Address; }
+            set
+            {
+                employee.Address = value;
+                NotifyPropertyChanged(nameof(Address));
+            }
+        }
+
+        public City City
+        {
+            get { return employee.City; }
+            set
+            {
+                employee.City = value;
+                NotifyPropertyChanged(nameof(City));
+            }
+        }
+
+        public bool CanCity { get { return true; } }
+
+        public List<City> Cities { get; private set; } = new List<City>
+        {
+            new City { Id = 1, Name = "Gliwice" },
+            new City { Id = 2, Name = "Knurów" }
+        };
+
+        public string PostalCode
+        {
+            get { return employee.PostalCode; }
+            set
+            {
+                employee.PostalCode = value;
+                NotifyPropertyChanged(nameof(PostalCode));
+            }
+        }
 
         public DateTime EmploymentDate
         {
@@ -57,15 +111,35 @@ namespace EmployeeManagement.Desktop.ViewModels
             set
             {
                 employee.EmploymentDate = value;
-                RaisePropertyChanged(nameof(EmploymentDate));
+                NotifyPropertyChanged(nameof(EmploymentDate));
             }
         }
 
-        public ICommand AcceptEmployeeCommand { get; set; }
+        protected override string ValidateProperty(string propertyName)
+        {
+            switch (propertyName)
+            {
+                case nameof(FirstName):
+                    if (string.IsNullOrWhiteSpace(FirstName))
+                        return "Imię nie może być puste!";
+                    else if (FirstName.Any(char.IsDigit))
+                        return "Imię nie może zawierać cyfr!";
+                    break;
+                case nameof(LastName):
+                    if (string.IsNullOrWhiteSpace(LastName))
+                        return "Nazwisko nie może być puste!";
+                    else if (LastName.Any(char.IsDigit))
+                        return "Nazwisko nie może zawierać cyfr!";
+                    break;
+            }
+            return null;
+        }
 
-        public ICommand CancelEmployeeCommand { get; set; }
+        public ICommand AcceptEmployeeCommand { get; private set; }
 
-        private async void ExecuteAcceptEmployee()
+        public ICommand CancelEmployeeCommand { get; private set; }
+
+        private async void AcceptEmployee(object parameter)
         {
             switch (dataMode)
             {
@@ -78,9 +152,9 @@ namespace EmployeeManagement.Desktop.ViewModels
             }
         }
 
-        private void ExecuteCancelEmployee()
+        private void CancelEmployee(object parameter)
         {
-            RaiseRequestClose(new DialogResult());
+            //RaiseRequestClose(new DialogResult());
         }
 
         private void SetAddMode()
@@ -93,39 +167,35 @@ namespace EmployeeManagement.Desktop.ViewModels
         {
             Title = "Edytuj pracownika";
             dataMode = DataMode.Edit;
-            FirstName = employee.FirstName;
-            LastName = employee.LastName;
-            Job = employee.Job;
-            EmploymentDate = employee.EmploymentDate;
+            this.employee = employee;
         }
 
-        public override async void OnDialogOpened(IDialogParameters parameters)
-        {
-            Jobs = await employeeService.GetAllJobsAsync();
-            switch (parameters.GetValue<DataMode>("DataMode"))
-            {
-                case DataMode.Add:
-                    SetAddMode();
-                    break;
-                case DataMode.Edit:
-                    SetEditMode(parameters.GetValue<Employee>("Employee"));
-                    break;
-                default:
-                    throw new ArgumentException("Przekazano nieprawidłowy parametr trybu danych!");
-            }
-        }
+        //public override async void OnDialogOpened(IDialogParameters parameters)
+        //{
+        //    Jobs = await employeeService.GetAllJobsAsync();
+        //    switch (parameters.GetValue<DataMode>("DataMode"))
+        //    {
+        //        case DataMode.Add:
+        //            SetAddMode();
+        //            break;
+        //        case DataMode.Edit:
+        //            SetEditMode(parameters.GetValue<Employee>("Employee"));
+        //            break;
+        //        default:
+        //            throw new ArgumentException("Przekazano nieprawidłowy parametr trybu danych!");
+        //    }
+        //}
 
-        public override void OnDialogClosed()
-        {
-            base.OnDialogClosed();
-        }
+        //public override void OnDialogClosed()
+        //{
+        //    base.OnDialogClosed();
+        //}
 
-        public EmployeeViewModel(IEmployeeService<Employee> employeeService)
+        public EmployeeViewModel()
         {
-            this.employeeService = employeeService;
-            this.employee = new Employee();
-            AcceptEmployeeCommand = new DelegateCommand(ExecuteAcceptEmployee);
-            CancelEmployeeCommand = new DelegateCommand(ExecuteCancelEmployee);
+            AcceptEmployeeCommand = new RelayCommand<object>(AcceptEmployee);
+            CancelEmployeeCommand = new RelayCommand<object>(CancelEmployee);
+            SetAddMode();
         }
     }
 }

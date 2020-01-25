@@ -1,9 +1,25 @@
 ﻿<UserControl x:Class="EmployeeManagement.Desktop.Views.ScheduleView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:prism="http://prismlibrary.com/"             
-             prism:ViewModelLocator.AutoWireViewModel="True">
-    <Grid>
-            
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EmployeeManagement.Desktop.Views"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:vm="clr-namespace:EmployeeManagement.Desktop.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <vm:ScheduleViewModel />
+    </UserControl.DataContext>
+    <Grid Background="White">
+        <ListView ItemsSource="{Binding ScheduleEntries}" SelectedItem="{Binding SelectedEntry}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Pracownik" DisplayMemberBinding="{Binding Employee.FullName}" />
+                    <GridViewColumn Header="Rozpoczęcie" DisplayMemberBinding="{Binding Start}" />
+                    <GridViewColumn Header="Zakończenie" DisplayMemberBinding="{Binding End}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </UserControl>

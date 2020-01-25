@@ -11,7 +11,6 @@ namespace EmployeeManagement.Core.Models
     {
         [Key]
         [Required]
-        [JsonProperty]
         public int Id { get; set; }
 
         [ForeignKey(nameof(ExecutiveEmployee))]
@@ -23,11 +22,9 @@ namespace EmployeeManagement.Core.Models
         public Employee ExecutiveEmployee { get; set; }
 
         [Required]
-        [JsonProperty]
         public string Description { get; set; }
 
         [Required]
-        [JsonProperty]
         public DateTime OrderDate { get; set; }
 
         [JsonProperty]
@@ -37,7 +34,6 @@ namespace EmployeeManagement.Core.Models
         public DateTime? EndDate { get; set; }
 
         [Required]
-        [JsonProperty]
         public bool IsDone { get; set; }
 
         [JsonConstructor]

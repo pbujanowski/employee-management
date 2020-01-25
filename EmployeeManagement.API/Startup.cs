@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 using EmployeeManagement.API.Data;
 using EmployeeManagement.API.Services;
 using EmployeeManagement.Core.Models;
-using EmployeeManagement.Core.Services;
+using EmployeeManagement.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -30,11 +31,14 @@ namespace EmployeeManagement.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers()
-                .AddNewtonsoftJson();
+            services.AddControllers();
+                //.AddNewtonsoftJson();
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("ApplicationDbContext")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            //services.AddIdentity<ApplicationUser, IdentityRole>()
+            //    .AddDefaultTokenProviders();
 
             services.AddScoped<IEmployeeService<Employee>, EmployeeService>()
                 .AddScoped<IDutyService<Duty>, DutyService>();

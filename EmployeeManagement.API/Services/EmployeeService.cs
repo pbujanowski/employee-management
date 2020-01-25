@@ -1,8 +1,9 @@
 ﻿using EmployeeManagement.API.Data;
 using EmployeeManagement.Core.Models;
-using EmployeeManagement.Core.Services;
+using EmployeeManagement.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,41 +16,47 @@ namespace EmployeeManagement.API.Services
         {
         }
 
-        private List<Employee> ExampleEmployees =>
-            new List<Employee>
-            {
-                new Employee{ Id = 1, FirstName = "Jan", LastName = "Kowalski", Job = "dyrektor", Salary = 10000, ExperienceYears = 20 },
-                new Employee{ Id = 2, FirstName = "Zbigniew", LastName = "Malinowski", Job = "kierownik", Salary = 3000, ExperienceYears = 10 }
-            };
-
-        public Task<bool> AddOneAsync(Employee item)
+        public async Task<bool> AddOneAsync(Employee item)
         {
-            throw new NotImplementedException();
+            await Task.Run(() =>
+            {
+                context.Employees.Add(item);
+                context.SaveChangesAsync();
+            });
+            
+            return true;
         }
 
-        public Task<bool> DeleteOneAsync(Employee item)
+        public async Task<bool> DeleteOneAsync(Employee item)
         {
-            throw new NotImplementedException();
+            await Task.Run(() =>
+            {
+                context.Employees.Remove(item);
+                context.SaveChangesAsync();
+            });
+
+            return true;
         }
 
         public async Task<List<Employee>> GetAllAsync()
         {
-            return await Task.FromResult(ExampleEmployees).ConfigureAwait(false);
+            return await Task.FromResult(context.Employees.ToList()).ConfigureAwait(false);
         }
 
-        public Task<List<string>> GetAllJobsAsync()
+        public async Task<Employee> GetOneByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await Task.FromResult(context.Employees.Where(e => e.Id == id).FirstOrDefault());
         }
 
-        public Task<Employee> GetOneByIdAsync(int id)
+        public async Task<bool> UpdateOneAsync(Employee item)
         {
-            throw new NotImplementedException();
-        }
+            await Task.Run(() =>
+            {
+                context.Employees.Update(item);
+                context.SaveChanges();
+            });
 
-        public Task<bool> UpdateOneAsync(Employee item)
-        {
-            throw new NotImplementedException();
+            return true;
         }
     }
 }

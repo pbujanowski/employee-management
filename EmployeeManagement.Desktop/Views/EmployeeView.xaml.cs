@@ -6,7 +6,7 @@ namespace EmployeeManagement.Desktop.Views
     /// <summary>
     /// Interaction logic for AddEmployeeView.xaml
     /// </summary>
-    public partial class EmployeeView : UserControl
+    public partial class EmployeeView : Window
     {
         public EmployeeView()
         {

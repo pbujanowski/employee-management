@@ -6,16 +6,22 @@
     <AssemblyName>EmployeeManagement.Desktop</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Reports\WorkTimeRecordsReport.html" />
     <None Remove="Views\EmployeeView.xaml" />
     <None Remove="Views\MainView.xaml" />
     <None Remove="Views\ScheduleView.xaml" />
     <None Remove="Views\ShellView.xaml" />
-    <None Remove="Views\TopPanelView.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Prism.Unity" Version="7.2.0.1367" />
+    <EmbeddedResource Include="Reports\WorkTimeRecordsReport.html" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EmployeeManagement.Core\EmployeeManagement.Core.csproj" />
+    <ProjectReference Include="..\EmployeeManagement.Services\EmployeeManagement.Services.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Constants\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Management" Version="4.6.0" />
   </ItemGroup>
 </Project>

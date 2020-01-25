@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EmployeeManagement.API.Data;
 using EmployeeManagement.Core.Models;
-using EmployeeManagement.Core.Services;
 using Newtonsoft.Json;
+using EmployeeManagement.Services.Interfaces;
 
 namespace EmployeeManagement.API.Controllers
 {
@@ -37,6 +37,7 @@ namespace EmployeeManagement.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<string>> GetDutiesByEmployeeId(int employeeId)
         {
+            await Task.CompletedTask;
             throw new NotImplementedException();
         }
 

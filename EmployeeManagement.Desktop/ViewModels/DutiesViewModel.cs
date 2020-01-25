@@ -1,8 +1,6 @@
 ﻿using EmployeeManagement.Core.Models;
-using EmployeeManagement.Core.Services;
-using Prism.Commands;
-using Prism.Mvvm;
-using Prism.Regions;
+using EmployeeManagement.Services.Implementations;
+using EmployeeManagement.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,9 +12,9 @@ using System.Windows.Input;
 
 namespace EmployeeManagement.Desktop.ViewModels
 {
-    public class DutiesViewModel : BindableBase
+    public class DutiesViewModel : ViewModelBase
     {
-        private readonly IDutyService<Duty> dutyService;
+        private readonly IDutyService<Duty> dutyService = new DutyService();
         private ObservableCollection<Duty> duties;
         private Duty selectedDuty;
 
@@ -45,26 +43,41 @@ namespace EmployeeManagement.Desktop.ViewModels
         public ObservableCollection<Duty> Duties
         {
             get { return duties; }
-            set { SetProperty(ref duties, value); }
+            set 
+            {
+                duties = value;
+                NotifyPropertyChanged(nameof(Duties));
+            }
         }
 
         public Duty SelectedDuty
         {
             get { return selectedDuty; }
-            set { SetProperty(ref selectedDuty, value); }
+            set 
+            {
+                selectedDuty = value;
+                NotifyPropertyChanged(nameof(SelectedDuty));
+            }
         }
+
+        public ICommand AddDutyCommand { get; }
 
         public ICommand RefreshDutiesListCommand { get; }
 
-        private async void ExecuteRefreshDutiesList()
+        private void AddDuty(object parameter)
+        {
+
+        }
+
+        private async void RefreshDutiesList(object parameter)
         {
             await GetDuties().ConfigureAwait(false);
         }
 
-        public DutiesViewModel(IDutyService<Duty> dutyService)
+        public DutiesViewModel()
         {
-            this.dutyService = dutyService;
-            RefreshDutiesListCommand = new DelegateCommand(ExecuteRefreshDutiesList);
+            AddDutyCommand = new RelayCommand<object>(AddDuty);
+            RefreshDutiesListCommand = new RelayCommand<object>(RefreshDutiesList);
         }
     }
 }
