@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using EmployeeManagement.API.Data;
+using EmployeeManagement.Core.Models;
+using EmployeeManagement.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using EmployeeManagement.API.Data;
-using EmployeeManagement.Core.Models;
 using Newtonsoft.Json;
-using EmployeeManagement.Services.Interfaces;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace EmployeeManagement.API.Controllers
 {
@@ -37,13 +34,13 @@ namespace EmployeeManagement.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<string>> GetDutiesByEmployeeId(int employeeId)
         {
-            await Task.CompletedTask;
-            throw new NotImplementedException();
+            var duties = await service.GetAllByEmployeeIdAsync(employeeId).ConfigureAwait(false);
+            return JsonConvert.SerializeObject(duties);
         }
 
         // PUT: api/Duties/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDuty(int id, Duty duty)
+        public async Task<IActionResult> PutDuty(int id, [FromBody] Duty duty)
         {
             if (id != duty.Id)
             {
@@ -73,7 +70,7 @@ namespace EmployeeManagement.API.Controllers
 
         // POST: api/Duties
         [HttpPost]
-        public async Task<ActionResult<Duty>> PostDuty(Duty duty)
+        public async Task<ActionResult<Duty>> PostDuty([FromBody] Duty duty)
         {
             context.Duties.Add(duty);
             await context.SaveChangesAsync().ConfigureAwait(false);

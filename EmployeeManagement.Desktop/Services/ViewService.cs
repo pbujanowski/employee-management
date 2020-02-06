@@ -1,8 +1,6 @@
-﻿using EmployeeManagement.Desktop.ViewModels;
+﻿using EmployeeManagement.Core.Models;
+using EmployeeManagement.Desktop.ViewModels;
 using EmployeeManagement.Desktop.Views;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EmployeeManagement.Desktop.Services
 {
@@ -11,7 +9,10 @@ namespace EmployeeManagement.Desktop.Services
         private static readonly object locker = new object();
         private static ViewService instance;
         public static ViewService Instance { get { lock (locker) { return instance ?? (instance = new ViewService()); } } }
-        private ViewService() { }
+
+        private ViewService()
+        {
+        }
 
         private EmployeeView employeeView;
         private ReportTemplateDesignerView reportTemplateDesignerView;
@@ -22,22 +23,34 @@ namespace EmployeeManagement.Desktop.Services
             switch (viewModelName)
             {
                 case nameof(EmployeeViewModel):
-                    if (employeeView == null)
-                        employeeView = new EmployeeView();
+                    employeeView = new EmployeeView();
                     employeeView.Owner = App.Current.MainWindow;
                     employeeView.ShowDialog();
                     break;
+
                 case nameof(ReportTemplateDesignerViewModel):
-                    if (reportTemplateDesignerView == null)
-                        reportTemplateDesignerView = new ReportTemplateDesignerView();
+                    reportTemplateDesignerView = new ReportTemplateDesignerView();
                     reportTemplateDesignerView.Owner = App.Current.MainWindow;
                     reportTemplateDesignerView.ShowDialog();
                     break;
+
                 case nameof(DutyViewModel):
-                    if (dutyView == null)
-                        dutyView = new DutyView();
+                    dutyView = new DutyView();
                     dutyView.Owner = App.Current.MainWindow;
                     dutyView.ShowDialog();
+                    break;
+            }
+        }
+
+        public void ShowDialog(string viewModelName, object parameter)
+        {
+            switch (viewModelName)
+            {
+                case nameof(EmployeeViewModel):
+                    employeeView = new EmployeeView();
+                    employeeView.Owner = App.Current.MainWindow;
+                    employeeView.DataContext = new EmployeeViewModel((Employee)parameter);
+                    employeeView.ShowDialog();
                     break;
             }
         }
@@ -49,9 +62,11 @@ namespace EmployeeManagement.Desktop.Services
                 case nameof(EmployeeViewModel):
                     employeeView.Close();
                     break;
+
                 case nameof(ReportTemplateDesignerViewModel):
                     reportTemplateDesignerView.Close();
                     break;
+
                 case nameof(DutyViewModel):
                     dutyView.Close();
                     break;

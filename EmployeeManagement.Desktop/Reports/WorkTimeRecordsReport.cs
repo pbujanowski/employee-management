@@ -2,8 +2,6 @@
 using EmployeeManagement.Services.Implementations;
 using EmployeeManagement.Services.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EmployeeManagement.Desktop.Reports
 {

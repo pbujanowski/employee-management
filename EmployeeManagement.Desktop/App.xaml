@@ -7,6 +7,17 @@
              StartupUri="Views/ShellView.xaml">
     <Application.Resources>
         <ResourceDictionary>
+            <Style TargetType="Button">
+                <Style.Setters>
+                    <Setter Property="Margin" Value="3" />
+                </Style.Setters>
+            </Style>
+
+            <Style TargetType="ComboBox">
+                <Style.Setters>
+                    <Setter Property="Margin" Value="3" />
+                </Style.Setters>
+            </Style>
 
             <Style TargetType="TextBox">
                 <Style.Triggers>
@@ -16,14 +27,12 @@
                 </Style.Triggers>
 
                 <Style.Setters>
-                    <Setter Property="Margin" Value="6,6,6,6" />
+                    <Setter Property="Margin" Value="3" />
                 </Style.Setters>
             </Style>
+
             <DataTemplate DataType="{x:Type vm:ShellViewModel}">
                 <v:ShellView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type vm:MainViewModel}">
-                <v:MainView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type vm:EmployeesViewModel}">
                 <v:EmployeesView />

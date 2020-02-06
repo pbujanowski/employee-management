@@ -1,8 +1,4 @@
-﻿using EmployeeManagement.Core.Models;
-using EmployeeManagement.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using System.Windows;
 using System.Windows.Input;
 
@@ -10,15 +6,16 @@ namespace EmployeeManagement.Desktop.ViewModels
 {
     public class LoginViewModel : ViewModelBase
     {
-        private readonly IUserService<User> userService;
+        //private readonly IUserService<User> userService;
         private string userName;
+
         private string password;
         private string errorMessage;
 
         public string UserName
         {
             get { return userName; }
-            set 
+            set
             {
                 userName = value;
                 NotifyPropertyChanged(nameof(UserName));
@@ -28,7 +25,7 @@ namespace EmployeeManagement.Desktop.ViewModels
         public string Password
         {
             get { return password; }
-            set 
+            set
             {
                 password = value;
                 NotifyPropertyChanged(nameof(Password));
@@ -38,7 +35,7 @@ namespace EmployeeManagement.Desktop.ViewModels
         public string ErrorMessage
         {
             get { return errorMessage; }
-            set 
+            set
             {
                 errorMessage = value;
                 NotifyPropertyChanged(nameof(ErrorMessage));
@@ -53,14 +50,14 @@ namespace EmployeeManagement.Desktop.ViewModels
         {
             try
             {
-                var user = await userService.LoginAsync(new User { UserName = UserName, Password = Password }); ;
-                if (user != null)
-                {
-                    App.CurrentUser = user;
-                    //RaiseRequestClose(new DialogResult());
-                }
-                else
-                    ErrorMessage = "Wprowadzone dane są nieprawidłowe!";
+                //var user = await userService.LoginAsync(new User { UserName = UserName, Password = Password }); ;
+                //if (user != null)
+                //{
+                //    App.CurrentUser = user;
+                //    //RaiseRequestClose(new DialogResult());
+                //}
+                //else
+                //    ErrorMessage = "Wprowadzone dane są nieprawidłowe!";
             }
             catch (Exception ex)
             {

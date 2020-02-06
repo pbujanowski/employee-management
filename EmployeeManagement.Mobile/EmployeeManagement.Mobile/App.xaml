@@ -6,6 +6,5 @@
              mc:Ignorable="d"
              x:Class="EmployeeManagement.Mobile.App">
     <Application.Resources>
-        
     </Application.Resources>
 </Application>

@@ -3,10 +3,7 @@ using EmployeeManagement.Desktop.Services;
 using EmployeeManagement.Services.Implementations;
 using EmployeeManagement.Services.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -45,7 +42,7 @@ namespace EmployeeManagement.Desktop.ViewModels
         public ObservableCollection<Duty> Duties
         {
             get { return duties; }
-            set 
+            set
             {
                 duties = value;
                 NotifyPropertyChanged(nameof(Duties));
@@ -55,7 +52,7 @@ namespace EmployeeManagement.Desktop.ViewModels
         public Duty SelectedDuty
         {
             get { return selectedDuty; }
-            set 
+            set
             {
                 selectedDuty = value;
                 NotifyPropertyChanged(nameof(SelectedDuty));

@@ -14,7 +14,6 @@
     <Grid Background="White">
         <Border VerticalAlignment="Center" HorizontalAlignment="Center" Width="400" Height="225">
             <Grid>
-                
             </Grid>
         </Border>
     </Grid>

@@ -3,9 +3,7 @@ using EmployeeManagement.Desktop.Services;
 using EmployeeManagement.Services.Implementations;
 using EmployeeManagement.Services.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows.Input;
 
 namespace EmployeeManagement.Desktop.ViewModels
@@ -17,7 +15,7 @@ namespace EmployeeManagement.Desktop.ViewModels
         private Duty duty = new Duty();
         private bool canDeadline;
 
-        public string Description 
+        public string Description
         {
             get { return duty.Description; }
             set
@@ -27,7 +25,7 @@ namespace EmployeeManagement.Desktop.ViewModels
             }
         }
 
-        public Employee ExecutiveEmployee 
+        public Employee ExecutiveEmployee
         {
             get { return duty.ExecutiveEmployee; }
             set
@@ -39,7 +37,7 @@ namespace EmployeeManagement.Desktop.ViewModels
 
         public ObservableCollection<Employee> Employees { get; private set; }
 
-        public DateTime OrderDate 
+        public DateTime OrderDate
         {
             get { return duty.OrderDate; }
             set
@@ -48,7 +46,7 @@ namespace EmployeeManagement.Desktop.ViewModels
             }
         }
 
-        public DateTime? Deadline 
+        public DateTime? Deadline
         {
             get { return duty.Deadline; }
             set
@@ -58,7 +56,7 @@ namespace EmployeeManagement.Desktop.ViewModels
             }
         }
 
-        public bool CanDeadline 
+        public bool CanDeadline
         {
             get { return canDeadline; }
             set
@@ -83,12 +81,10 @@ namespace EmployeeManagement.Desktop.ViewModels
 
         private async void GetEmployees(object parameter)
         {
-
         }
 
         private async void AcceptDuty(object parameter)
         {
-
         }
 
         private void CancelDuty(object parameter)

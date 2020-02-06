@@ -1,9 +1,7 @@
 ﻿using EmployeeManagement.API.Data;
 using EmployeeManagement.Core.Models;
 using EmployeeManagement.Services.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,10 +18,10 @@ namespace EmployeeManagement.API.Services
         {
             await Task.Run(() =>
             {
-                context.Employees.Add(item);
-                context.SaveChangesAsync();
+                dbContext.Employees.Add(item);
+                dbContext.SaveChangesAsync();
             });
-            
+
             return true;
         }
 
@@ -31,8 +29,8 @@ namespace EmployeeManagement.API.Services
         {
             await Task.Run(() =>
             {
-                context.Employees.Remove(item);
-                context.SaveChangesAsync();
+                dbContext.Employees.Remove(item);
+                dbContext.SaveChangesAsync();
             });
 
             return true;
@@ -40,20 +38,20 @@ namespace EmployeeManagement.API.Services
 
         public async Task<List<Employee>> GetAllAsync()
         {
-            return await Task.FromResult(context.Employees.ToList()).ConfigureAwait(false);
+            return await Task.FromResult(dbContext.Employees.ToList()).ConfigureAwait(false);
         }
 
         public async Task<Employee> GetOneByIdAsync(int id)
         {
-            return await Task.FromResult(context.Employees.Where(e => e.Id == id).FirstOrDefault());
+            return await Task.FromResult(dbContext.Employees.Where(e => e.Id == id).FirstOrDefault());
         }
 
         public async Task<bool> UpdateOneAsync(Employee item)
         {
             await Task.Run(() =>
             {
-                context.Employees.Update(item);
-                context.SaveChanges();
+                dbContext.Employees.Update(item);
+                dbContext.SaveChanges();
             });
 
             return true;

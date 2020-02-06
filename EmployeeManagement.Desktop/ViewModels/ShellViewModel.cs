@@ -1,4 +1,4 @@
-﻿using System.Windows;
+﻿using EmployeeManagement.Core.Dtos;
 using System.Windows.Input;
 
 namespace EmployeeManagement.Desktop.ViewModels
@@ -8,12 +8,23 @@ namespace EmployeeManagement.Desktop.ViewModels
         //private readonly IDialogService dialogService;
         private string title = "Zarządzanie kadrą pracowniczą";
 
-        public ICommand ShowLoginViewCommand { get; private set; }
+        public string LoginOrLogoutButtonCaption
+        {
+            get
+            {
+                if (Session.User != null)
+                    return "Wyloguj się";
+                else
+                    return "Zaloguj się";
+            }
+        }
+
+        public ICommand LoginOrLogoutCommand { get; private set; }
 
         public string Title
         {
             get { return title; }
-            set 
+            set
             {
                 title = value;
                 NotifyPropertyChanged(nameof(Title));
@@ -24,21 +35,23 @@ namespace EmployeeManagement.Desktop.ViewModels
         {
             get
             {
-                if (App.CurrentUser != null)
-                    return $"Witaj, {App.CurrentUser.Id}!";
+                if (Session.User != null)
+                    return "Zalogowano";
                 else
-                    return "Niezalogowano";
+                    return "Nie zalogowano";
             }
         }
 
-        private void ShowLoginView(object parameter)
+        private void LoginOrLogout(object parameter)
         {
-            //dialogService.ShowDialog("LoginView", null, null);
+            Session.User = new UserDto();
+            NotifyPropertyChanged(nameof(LoginOrLogoutButtonCaption));
+            NotifyPropertyChanged(nameof(CurrentUserInfo));
         }
 
         public ShellViewModel()
         {
-            ShowLoginViewCommand = new RelayCommand<object>(ShowLoginView);
+            LoginOrLogoutCommand = new RelayCommand<object>(LoginOrLogout);
         }
     }
 }

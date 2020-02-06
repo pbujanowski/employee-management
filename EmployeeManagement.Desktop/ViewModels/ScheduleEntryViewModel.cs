@@ -2,8 +2,6 @@
 using EmployeeManagement.Services.Implementations;
 using EmployeeManagement.Services.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 
 namespace EmployeeManagement.Desktop.ViewModels
@@ -13,7 +11,7 @@ namespace EmployeeManagement.Desktop.ViewModels
         private readonly IScheduleService<ScheduleEntry> scheduleService = new ScheduleService();
         private readonly ScheduleEntry scheduleEntry = new ScheduleEntry();
 
-        public Employee SelectedEmployee 
+        public Employee SelectedEmployee
         {
             get { return scheduleEntry.Employee; }
             set
@@ -23,7 +21,7 @@ namespace EmployeeManagement.Desktop.ViewModels
             }
         }
 
-        public DateTime? Start 
+        public DateTime? Start
         {
             get { return scheduleEntry.Start; }
             set
@@ -33,7 +31,7 @@ namespace EmployeeManagement.Desktop.ViewModels
             }
         }
 
-        public DateTime? End 
+        public DateTime? End
         {
             get { return scheduleEntry.End; }
             set
@@ -47,13 +45,11 @@ namespace EmployeeManagement.Desktop.ViewModels
 
         private async void AddScheduleEntry(object parameter)
         {
-
         }
 
         public ScheduleEntryViewModel()
         {
             AddScheduleEntryCommand = new RelayCommand<object>(AddScheduleEntry);
         }
-
     }
 }

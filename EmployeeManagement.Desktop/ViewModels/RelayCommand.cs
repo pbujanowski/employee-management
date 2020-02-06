@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 
 namespace EmployeeManagement.Desktop.ViewModels
@@ -9,10 +7,10 @@ namespace EmployeeManagement.Desktop.ViewModels
     {
         #region Fields
 
-        readonly Action<T> _execute = null;
-        readonly Predicate<T> _canExecute = null;
+        private readonly Action<T> _execute = null;
+        private readonly Predicate<T> _canExecute = null;
 
-        #endregion
+        #endregion Fields
 
         #region Constructors
 
@@ -40,7 +38,7 @@ namespace EmployeeManagement.Desktop.ViewModels
             _canExecute = canExecute;
         }
 
-        #endregion
+        #endregion Constructors
 
         #region ICommand Members
 
@@ -74,6 +72,6 @@ namespace EmployeeManagement.Desktop.ViewModels
             _execute((T)parameter);
         }
 
-        #endregion
+        #endregion ICommand Members
     }
 }

@@ -1,6 +1,5 @@
-﻿using System;
-using System.Windows.Input;
-
+﻿using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace EmployeeManagement.Mobile.ViewModels
@@ -10,8 +9,7 @@ namespace EmployeeManagement.Mobile.ViewModels
         public AboutViewModel()
         {
             Title = "About";
-
-            OpenWebCommand = new Command(() => Device.OpenUri(new Uri("https://xamarin.com/platform")));
+            OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://xamarin.com"));
         }
 
         public ICommand OpenWebCommand { get; }

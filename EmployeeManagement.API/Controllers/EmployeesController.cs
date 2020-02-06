@@ -1,14 +1,11 @@
-﻿using System;
+﻿using EmployeeManagement.API.Data;
+using EmployeeManagement.Core.Models;
+using EmployeeManagement.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using EmployeeManagement.API.Data;
-using EmployeeManagement.Core.Models;
-using Newtonsoft.Json;
-using EmployeeManagement.Services.Interfaces;
 
 namespace EmployeeManagement.API.Controllers
 {
@@ -47,7 +44,7 @@ namespace EmployeeManagement.API.Controllers
 
         // PUT: api/Employees/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEmployee(int id, Employee employee)
+        public async Task<IActionResult> PutEmployee(int id, [FromBody] Employee employee)
         {
             if (id != employee.Id)
             {
@@ -77,7 +74,7 @@ namespace EmployeeManagement.API.Controllers
 
         // POST: api/Employees
         [HttpPost]
-        public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
+        public async Task<ActionResult<Employee>> PostEmployee([FromBody] Employee employee)
         {
             context.Employees.Add(employee);
             await context.SaveChangesAsync();

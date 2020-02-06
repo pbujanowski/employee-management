@@ -2,14 +2,7 @@
 using EmployeeManagement.Core.Helpers;
 using EmployeeManagement.Core.Models;
 using EmployeeManagement.Services.Interfaces;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EmployeeManagement.Services.Implementations
@@ -36,7 +29,8 @@ namespace EmployeeManagement.Services.Implementations
 
         public async Task<List<Duty>> GetAllByEmployeeIdAsync(int employeeId)
         {
-            throw new NotImplementedException();
+            return await HttpHelper.DoGetRequestAsync<List<Duty>>(HttpUrls.DutyPath + employeeId)
+                .ConfigureAwait(false);
         }
 
         public async Task<Duty> GetOneByIdAsync(int id)

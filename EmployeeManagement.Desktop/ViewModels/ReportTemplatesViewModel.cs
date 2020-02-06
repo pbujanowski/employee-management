@@ -1,9 +1,6 @@
 ﻿using EmployeeManagement.Core.Models;
 using EmployeeManagement.Desktop.Services;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows.Input;
 
 namespace EmployeeManagement.Desktop.ViewModels
@@ -14,7 +11,7 @@ namespace EmployeeManagement.Desktop.ViewModels
         private ObservableCollection<ReportTemplate> reportTemplates;
         private ReportTemplate selectedTemplate;
 
-        public ObservableCollection<ReportTemplate> ReportTemplates 
+        public ObservableCollection<ReportTemplate> ReportTemplates
         {
             get { return reportTemplates; }
             set
@@ -24,7 +21,7 @@ namespace EmployeeManagement.Desktop.ViewModels
             }
         }
 
-        public ReportTemplate SelectedTemplate 
+        public ReportTemplate SelectedTemplate
         {
             get { return selectedTemplate; }
             set
@@ -45,7 +42,6 @@ namespace EmployeeManagement.Desktop.ViewModels
 
         private void RefreshReportTemplatesList(object parameter)
         {
-
         }
 
         public ReportTemplatesViewModel()

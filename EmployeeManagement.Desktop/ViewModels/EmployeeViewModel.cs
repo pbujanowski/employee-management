@@ -4,13 +4,9 @@ using EmployeeManagement.Desktop.Services;
 using EmployeeManagement.Services.Implementations;
 using EmployeeManagement.Services.Interfaces;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace EmployeeManagement.Desktop.ViewModels
@@ -19,14 +15,15 @@ namespace EmployeeManagement.Desktop.ViewModels
     {
         private string title;
         private Employee employee = new Employee();
+        private ObservableCollection<City> cities;
         private readonly IViewService viewService = ViewService.Instance;
         private readonly IEmployeeService<Employee> employeeService = new EmployeeService();
         private readonly ICityService<City> cityService = new CityService();
         private readonly IJobService<Job> jobService = new JobService();
         private DataMode dataMode;
 
-        public string Title 
-        { 
+        public string Title
+        {
             get { return title; }
             set
             {
@@ -85,13 +82,22 @@ namespace EmployeeManagement.Desktop.ViewModels
             set
             {
                 employee.City = value;
+                employee.CityId = value.Id;
                 NotifyPropertyChanged(nameof(City));
             }
         }
 
         public bool CanCity { get { return true; } }
 
-        public ObservableCollection<City> Cities { get; private set; }
+        public ObservableCollection<City> Cities
+        {
+            get { return cities; }
+            set
+            {
+                cities = value;
+                NotifyPropertyChanged(nameof(Cities));
+            }
+        }
 
         public string PostalCode
         {
@@ -123,11 +129,27 @@ namespace EmployeeManagement.Desktop.ViewModels
                     else if (FirstName.Any(char.IsDigit))
                         return "Imię nie może zawierać cyfr!";
                     break;
+
                 case nameof(LastName):
                     if (string.IsNullOrWhiteSpace(LastName))
                         return "Nazwisko nie może być puste!";
                     else if (LastName.Any(char.IsDigit))
                         return "Nazwisko nie może zawierać cyfr!";
+                    break;
+
+                case nameof(Address):
+                    if (string.IsNullOrWhiteSpace(Address))
+                        return "Adres zamieszkania nie może być pusty!";
+                    break;
+
+                case nameof(City):
+                    if (string.IsNullOrWhiteSpace(City?.Name))
+                        return "Należy wybrać miasto zamieszkania!";
+                    break;
+
+                case nameof(EmploymentDate):
+                    if (EmploymentDate.Date > DateTime.Now.Date)
+                        return "Data zatrudnienia nie może dotyczyć przyszłości!";
                     break;
             }
             return null;
@@ -135,7 +157,7 @@ namespace EmployeeManagement.Desktop.ViewModels
 
         public ICommand AcceptEmployeeCommand { get; private set; }
 
-        public ICommand CancelEmployeeCommand { get; private set; }
+        public ICommand CloseCommand { get; private set; }
 
         public ICommand GetCitiesCommand { get; private set; }
 
@@ -143,44 +165,70 @@ namespace EmployeeManagement.Desktop.ViewModels
 
         private async void AcceptEmployee(object parameter)
         {
-            switch (dataMode)
+            try
             {
-                case DataMode.Add:
-                    await employeeService.AddOneAsync(employee);
-                    break;
-                case DataMode.Edit:
-                    await employeeService.UpdateOneAsync(employee);
-                    break;
+                switch (dataMode)
+                {
+                    case DataMode.Add:
+                        await employeeService.AddOneAsync(employee);
+                        CloseCommand.Execute(null);
+                        break;
+
+                    case DataMode.Edit:
+                        await employeeService.UpdateOneAsync(employee);
+                        CloseCommand.Execute(null);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
-        private void CancelEmployee(object parameter)
+        private void Close(object parameter)
         {
             viewService.CloseDialog(nameof(EmployeeViewModel));
         }
 
         private async void GetCities(object parameter)
         {
-            var cities = await cityService.GetAllAsync();
-            if (this.Cities == null)
-                this.Cities = new ObservableCollection<City>();
-            else
-                this.Cities.Clear();
+            try
+            {
+                var cities = await cityService.GetAllAsync();
+                if (this.Cities == null)
+                    this.Cities = new ObservableCollection<City>();
+                else
+                    this.Cities.Clear();
 
-            foreach (var city in cities)
-                this.Cities.Add(city);
+                foreach (var city in cities)
+                    this.Cities.Add(city);
+
+                City = Cities.First();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private async void GetJobs(object parameter)
         {
-            var jobs = await jobService.GetAllAsync();
-            if (this.Jobs == null)
-                this.Jobs = new ObservableCollection<Job>();
-            else
-                this.Jobs.Clear();
+            try
+            {
+                var jobs = await jobService.GetAllAsync();
+                if (this.Jobs == null)
+                    this.Jobs = new ObservableCollection<Job>();
+                else
+                    this.Jobs.Clear();
 
-            foreach (var job in jobs)
-                this.Jobs.Add(job);
+                foreach (var job in jobs)
+                    this.Jobs.Add(job);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void SetAddMode()
@@ -196,34 +244,24 @@ namespace EmployeeManagement.Desktop.ViewModels
             this.employee = employee;
         }
 
-        //public override async void OnDialogOpened(IDialogParameters parameters)
-        //{
-        //    Jobs = await employeeService.GetAllJobsAsync();
-        //    switch (parameters.GetValue<DataMode>("DataMode"))
-        //    {
-        //        case DataMode.Add:
-        //            SetAddMode();
-        //            break;
-        //        case DataMode.Edit:
-        //            SetEditMode(parameters.GetValue<Employee>("Employee"));
-        //            break;
-        //        default:
-        //            throw new ArgumentException("Przekazano nieprawidłowy parametr trybu danych!");
-        //    }
-        //}
-
-        //public override void OnDialogClosed()
-        //{
-        //    base.OnDialogClosed();
-        //}
+        private void Initialize()
+        {
+            AcceptEmployeeCommand = new RelayCommand<object>(AcceptEmployee);
+            CloseCommand = new RelayCommand<object>(Close);
+            GetCitiesCommand = new RelayCommand<object>(GetCities);
+            GetJobsCommand = new RelayCommand<object>(GetJobs);
+        }
 
         public EmployeeViewModel()
         {
-            AcceptEmployeeCommand = new RelayCommand<object>(AcceptEmployee);
-            CancelEmployeeCommand = new RelayCommand<object>(CancelEmployee);
-            GetCitiesCommand = new RelayCommand<object>(GetCities);
-            GetJobsCommand = new RelayCommand<object>(GetJobs);
+            Initialize();
             SetAddMode();
+        }
+
+        public EmployeeViewModel(Employee employee)
+        {
+            Initialize();
+            SetEditMode(employee);
         }
     }
 }

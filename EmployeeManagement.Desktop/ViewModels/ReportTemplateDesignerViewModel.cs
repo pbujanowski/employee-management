@@ -1,7 +1,4 @@
 ﻿using EmployeeManagement.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 
 namespace EmployeeManagement.Desktop.ViewModels
@@ -11,7 +8,7 @@ namespace EmployeeManagement.Desktop.ViewModels
         private readonly ReportTemplate template = new ReportTemplate();
         private string previewValue;
 
-        public string Code 
+        public string Code
         {
             get { return template.Code; }
             set
@@ -21,7 +18,7 @@ namespace EmployeeManagement.Desktop.ViewModels
             }
         }
 
-        public string Value 
+        public string Value
         {
             get { return template.Value; }
             set
@@ -31,7 +28,7 @@ namespace EmployeeManagement.Desktop.ViewModels
             }
         }
 
-        public string PreviewValue 
+        public string PreviewValue
         {
             get { return previewValue; }
             set

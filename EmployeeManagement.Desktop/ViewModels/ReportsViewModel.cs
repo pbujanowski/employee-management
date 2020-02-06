@@ -1,8 +1,5 @@
 ﻿using EmployeeManagement.Core.Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows.Input;
 
 namespace EmployeeManagement.Desktop.ViewModels
@@ -12,7 +9,7 @@ namespace EmployeeManagement.Desktop.ViewModels
         private ObservableCollection<Report> reports;
         private Report selectedReport;
 
-        public ObservableCollection<Report> Reports 
+        public ObservableCollection<Report> Reports
         {
             get { return reports; }
             set
@@ -22,7 +19,7 @@ namespace EmployeeManagement.Desktop.ViewModels
             }
         }
 
-        public Report SelectedReport 
+        public Report SelectedReport
         {
             get { return selectedReport; }
             set
@@ -38,12 +35,10 @@ namespace EmployeeManagement.Desktop.ViewModels
 
         private void AddReport(object parameter)
         {
-
         }
 
         private void RefreshReportsList(object parameter)
         {
-
         }
 
         public ReportsViewModel()

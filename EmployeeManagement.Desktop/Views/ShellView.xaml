@@ -11,46 +11,41 @@
     </Window.DataContext>
     <DockPanel>
         <Border DockPanel.Dock="Top" Height="50" Padding="0">
-            <Grid>
-                <GroupBox Grid.Column="4" Padding="6" >
-                    <GroupBox Content="{Binding CurrentUserInfo, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Margin="3" />
-                </GroupBox>
+            <Grid HorizontalAlignment="Right" Margin="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="{Binding CurrentUserInfo, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Margin="3" />
+                <Button Grid.Column="1" Command="{Binding LoginOrLogoutCommand}" Content="{Binding LoginOrLogoutButtonCaption, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Margin="3" />
             </Grid>
         </Border>
-        <GroupBox DockPanel.Dock="Top" Margin="3" Padding="6">
-            <TabControl>
-                <TabItem Header="Strona główna">
-                    <ContentControl>
-                        <vm:MainViewModel />
-                    </ContentControl>
-                </TabItem>
-                <TabItem Header="Pracownicy">
-                    <ContentControl>
-                        <vm:EmployeesViewModel />
-                    </ContentControl>
-                </TabItem>
-                <TabItem Header="Obowiązki">
-                    <ContentControl>
-                        <vm:DutiesViewModel />
-                    </ContentControl>
-                </TabItem>
-                <TabItem Header="Grafik">
-                    <ContentControl>
-                        <vm:ScheduleViewModel />
-                    </ContentControl>
-                </TabItem>
-                <TabItem Header="Raporty">
-                    <ContentControl>
-                        <vm:ReportsViewModel />
-                    </ContentControl>
-                </TabItem>
-                <TabItem Header="Szablony raportów">
-                    <ContentControl>
-                        <vm:ReportTemplatesViewModel />
-                    </ContentControl>
-                </TabItem>
-            </TabControl>
-        </GroupBox>
-        
+        <TabControl DockPanel.Dock="Top" Margin="3" Padding="6">
+            <TabItem Header="Pracownicy">
+                <ContentControl>
+                    <vm:EmployeesViewModel />
+                </ContentControl>
+            </TabItem>
+            <TabItem Header="Obowiązki">
+                <ContentControl>
+                    <vm:DutiesViewModel />
+                </ContentControl>
+            </TabItem>
+            <TabItem Header="Grafik">
+                <ContentControl>
+                    <vm:ScheduleViewModel />
+                </ContentControl>
+            </TabItem>
+            <TabItem Header="Raporty">
+                <ContentControl>
+                    <vm:ReportsViewModel />
+                </ContentControl>
+            </TabItem>
+            <TabItem Header="Szablony raportów">
+                <ContentControl>
+                    <vm:ReportTemplatesViewModel />
+                </ContentControl>
+            </TabItem>
+        </TabControl>
     </DockPanel>
 </Window>

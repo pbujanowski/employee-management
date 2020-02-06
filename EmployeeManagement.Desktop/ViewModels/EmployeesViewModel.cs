@@ -1,19 +1,11 @@
 ﻿using EmployeeManagement.Core.Models;
-using EmployeeManagement.Desktop.Enums;
 using EmployeeManagement.Desktop.Services;
 using EmployeeManagement.Services.Implementations;
 using EmployeeManagement.Services.Interfaces;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 
 namespace EmployeeManagement.Desktop.ViewModels
 {
@@ -28,7 +20,7 @@ namespace EmployeeManagement.Desktop.ViewModels
         public ObservableCollection<Employee> Employees
         {
             get { return employees; }
-            set 
+            set
             {
                 employees = value;
                 NotifyPropertyChanged(nameof(Employees));
@@ -78,27 +70,12 @@ namespace EmployeeManagement.Desktop.ViewModels
 
         private void AddEmployee(object parameter)
         {
-            //var parameters = new DialogParameters
-            //{
-            //    { "DataMode", DataMode.Add }
-            //};
-            //dialogService.ShowDialog("EmployeeView", parameters, RefreshEmployeesListCommand.Execute);
             viewService.ShowDialog(nameof(EmployeeViewModel));
         }
 
         private void EditEmployee(object parameter)
         {
-            //if (SelectedEmployee != null)
-            //{
-            //    var parameters = new DialogParameters
-            //    {
-            //        { "DataMode", DataMode.Edit },
-            //        { "Employee", SelectedEmployee }
-            //    };
-            //    dialogService.ShowDialog("EmployeeView", parameters, RefreshEmployeesListCommand.Execute);
-            //}
-            //else
-            //    MessageBox.Show("Nie wybrano żadnego pracownika!");
+            viewService.ShowDialog(nameof(EmployeeViewModel), SelectedEmployee);
         }
 
         public EmployeesViewModel()

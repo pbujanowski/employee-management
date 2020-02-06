@@ -13,9 +13,9 @@
                 <GroupBox Header="Dane osobowe" Margin="6">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="0.5*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition />
@@ -24,20 +24,23 @@
                             <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <Label Content="Imię: " Grid.Column="0" Grid.Row="0" VerticalContentAlignment="Center"/>
-                        <TextBox Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="0" Margin="3,3,3,15"/>
+                        <Label Content="Imię: " Grid.Column="0" Grid.Row="0" VerticalContentAlignment="Center" />
+                        <TextBox Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" />
 
                         <Label Content="Nazwisko: " Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Center" />
-                        <TextBox Text="{Binding LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="1" Margin="3,3,3,15"/>
+                        <TextBox Text="{Binding LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" />
 
                         <Label Content="Adres zamieszkania: " Grid.Column="0" Grid.Row="2" VerticalContentAlignment="Center" />
-                        <TextBox Text="{Binding Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="2" Margin="3,3,3,15"/>
+                        <TextBox Text="{Binding Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" />
 
                         <Label Content="Miasto: " Grid.Column="0" Grid.Row="3" VerticalContentAlignment="Center" />
-                        <ComboBox IsEnabled="{Binding CanCity}" SelectedItem="{Binding City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Cities}" DisplayMemberPath="Name"  Grid.Column="1" Grid.Row="3" Margin="3,3,3,15"/>
+                        <ComboBox IsEnabled="{Binding CanCity}" SelectedItem="{Binding City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                  ItemsSource="{Binding Cities}" DisplayMemberPath="Name"
+                                  Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" />
+                        <Button Content="Wczytaj" Grid.Column="2" Grid.Row="3" Command="{Binding GetCitiesCommand}" VerticalAlignment="Center" />
 
                         <Label Content="Kod pocztowy: " Grid.Column="0" Grid.Row="4" VerticalContentAlignment="Center" />
-                        <TextBox Text="{Binding PostalCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="4" Margin="3,3,3,15"/>
+                        <TextBox Text="{Binding PostalCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" />
                     </Grid>
                 </GroupBox>
             </Border>
@@ -45,19 +48,19 @@
                 <GroupBox Header="Dane pracownicze" Margin="6,6,6,6">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="0.5*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <Label Content="Stanowisko: " Grid.Column="0" Grid.Row="0" VerticalContentAlignment="Center" />
-                        <ComboBox IsEnabled="{Binding CanJob}" ItemsSource="{Binding Jobs}" SelectedItem="{Binding Job, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="0" Margin="3,3,3,15"/>
+                        <ComboBox IsEnabled="{Binding CanJob}" ItemsSource="{Binding Jobs}" SelectedItem="{Binding Job, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" />
 
                         <Label Content="Data zatrudnienia: " Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Center" />
-                        <DatePicker SelectedDate="{Binding EmploymentDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="1" Margin="3,3,3,15"/>
+                        <DatePicker SelectedDate="{Binding EmploymentDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" />
                     </Grid>
                 </GroupBox>
             </Border>
@@ -65,11 +68,11 @@
         <Border VerticalAlignment="Bottom">
             <Grid Height="50">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Button Content="Akceptuj" Grid.Column="0" Command="{Binding AcceptEmployeeCommand}" Margin="6" />
-                <Button Content="Anuluj" Grid.Column="1" Command="{Binding CancelEmployeeCommand}" Margin="6" />
+                <Button Content="Akceptuj" Grid.Column="0" Command="{Binding AcceptEmployeeCommand}" />
+                <Button Content="Anuluj" Grid.Column="1" Command="{Binding CloseCommand}" />
             </Grid>
         </Border>
     </Grid>

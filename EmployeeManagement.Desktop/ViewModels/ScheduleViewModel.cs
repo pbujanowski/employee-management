@@ -1,10 +1,7 @@
 ﻿using EmployeeManagement.Core.Models;
 using EmployeeManagement.Services.Implementations;
 using EmployeeManagement.Services.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace EmployeeManagement.Desktop.ViewModels
 {
@@ -27,7 +24,7 @@ namespace EmployeeManagement.Desktop.ViewModels
         public ScheduleEntry SelectedEntry
         {
             get { return selectedEntry; }
-            set 
+            set
             {
                 selectedEntry = value;
                 NotifyPropertyChanged(nameof(SelectedEntry));
