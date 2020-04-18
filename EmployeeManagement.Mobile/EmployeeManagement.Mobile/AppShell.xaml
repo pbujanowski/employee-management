@@ -37,9 +37,6 @@
         <Tab Title="Zadania" Icon="tab_feed.png">
             <ShellContent ContentTemplate="{DataTemplate local:DutiesPage}" />
         </Tab>
-        <Tab Title="O aplikacji" Icon="tab_about.png">
-            <ShellContent ContentTemplate="{DataTemplate local:AboutPage}" />
-        </Tab>
     </TabBar>
 
     <!-- Optional Templates

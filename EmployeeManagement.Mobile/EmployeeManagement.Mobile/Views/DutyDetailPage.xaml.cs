@@ -1,4 +1,5 @@
-﻿using EmployeeManagement.Mobile.ViewModels;
+﻿using EmployeeManagement.Mobile.Communication;
+using EmployeeManagement.Mobile.ViewModels;
 using System.ComponentModel;
 using Xamarin.Forms;
 
@@ -16,6 +17,10 @@ namespace EmployeeManagement.Mobile.Views
             InitializeComponent();
 
             BindingContext = this.viewModel = viewModel;
+            MessagingCenter.Subscribe<DutyDetailViewModel, string>(this, Message.DisplayAlert, async (obj, args) =>
+            {
+                await DisplayAlert("Komunikat", args, "OK");
+            });
         }
 
         public DutyDetailPage()

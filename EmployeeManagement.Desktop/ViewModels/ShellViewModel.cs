@@ -1,13 +1,12 @@
 ﻿using EmployeeManagement.Core.Dtos;
+using EmployeeManagement.Desktop.Services;
+using System;
 using System.Windows.Input;
 
 namespace EmployeeManagement.Desktop.ViewModels
 {
     public class ShellViewModel : ViewModelBase
     {
-        //private readonly IDialogService dialogService;
-        private string title = "Zarządzanie kadrą pracowniczą";
-
         public string LoginOrLogoutButtonCaption
         {
             get
@@ -19,24 +18,16 @@ namespace EmployeeManagement.Desktop.ViewModels
             }
         }
 
-        public ICommand LoginOrLogoutCommand { get; private set; }
+        public bool CanNavigate { get { return Session.User != null; } }
 
-        public string Title
-        {
-            get { return title; }
-            set
-            {
-                title = value;
-                NotifyPropertyChanged(nameof(Title));
-            }
-        }
+        public ICommand LoginOrLogoutCommand { get; private set; }
 
         public string CurrentUserInfo
         {
             get
             {
                 if (Session.User != null)
-                    return "Zalogowano";
+                    return $"Witaj, {Session.User.Employee.FullName}";
                 else
                     return "Nie zalogowano";
             }
@@ -44,13 +35,32 @@ namespace EmployeeManagement.Desktop.ViewModels
 
         private void LoginOrLogout(object parameter)
         {
-            Session.User = new UserDto();
-            NotifyPropertyChanged(nameof(LoginOrLogoutButtonCaption));
-            NotifyPropertyChanged(nameof(CurrentUserInfo));
+            try
+            {
+                if (Session.User == null)
+                {
+                    viewService.ShowDialog(nameof(LoginViewModel));
+                }
+                else
+                {
+                    Session.User = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageService.ShowError(ex.Message);
+            }
+            finally
+            {
+                NotifyPropertyChanged(nameof(LoginOrLogoutButtonCaption));
+                NotifyPropertyChanged(nameof(CurrentUserInfo));
+                NotifyPropertyChanged(nameof(CanNavigate));
+            }
         }
 
         public ShellViewModel()
         {
+            Title = "Zarządzanie kadrą pracowniczą";
             LoginOrLogoutCommand = new RelayCommand<object>(LoginOrLogout);
         }
     }

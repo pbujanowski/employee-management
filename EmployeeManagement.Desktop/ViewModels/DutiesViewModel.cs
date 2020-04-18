@@ -12,15 +12,27 @@ namespace EmployeeManagement.Desktop.ViewModels
 {
     public class DutiesViewModel : ViewModelBase
     {
-        private readonly IViewService viewService = ViewService.Instance;
         private readonly IDutyService<Duty> dutyService = new DutyService();
         private ObservableCollection<Duty> duties;
         private Duty selectedDuty;
+        private string info;
+
+        public string Info 
+        {
+            get { return info; }
+            set
+            {
+                info = value;
+                NotifyPropertyChanged(nameof(Info));
+            }
+        }
 
         private async Task GetDuties()
         {
             try
             {
+                Info = "Proszę czekać...";
+
                 if (Duties == null)
                     Duties = new ObservableCollection<Duty>();
 
@@ -32,9 +44,12 @@ namespace EmployeeManagement.Desktop.ViewModels
                     foreach (var duty in duties)
                         Duties.Add(duty);
                 });
+
+                Info = "Gotowe!";
             }
             catch (Exception ex)
             {
+                Info = "Błąd!";
                 MessageBox.Show(ex.Message);
             }
         }
@@ -61,11 +76,20 @@ namespace EmployeeManagement.Desktop.ViewModels
 
         public ICommand AddDutyCommand { get; }
 
+        public ICommand EditDutyCommand { get; }
+
         public ICommand RefreshDutiesListCommand { get; }
+
+        public bool CanEditDuty { get { return SelectedDuty != null; } }
 
         private void AddDuty(object parameter)
         {
             viewService.ShowDialog(nameof(DutyViewModel));
+        }
+
+        private void EditDuty(object parameter)
+        {
+            viewService.ShowDialog(nameof(DutyViewModel), SelectedDuty);
         }
 
         private async void RefreshDutiesList(object parameter)
@@ -76,6 +100,7 @@ namespace EmployeeManagement.Desktop.ViewModels
         public DutiesViewModel()
         {
             AddDutyCommand = new RelayCommand<object>(AddDuty);
+            EditDutyCommand = new RelayCommand<object>(EditDuty, (obj) => CanEditDuty);
             RefreshDutiesListCommand = new RelayCommand<object>(RefreshDutiesList);
         }
     }

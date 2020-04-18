@@ -7,13 +7,27 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:vm="clr-namespace:EmployeeManagement.Desktop.ViewModels"
         mc:Ignorable="d"
-        Height="450" Width="800">
+        Height="450" Width="800" Title="{Binding Title}">
     <Window.DataContext>
         <vm:LoginViewModel />
     </Window.DataContext>
     <Grid Background="White">
         <Border VerticalAlignment="Center" HorizontalAlignment="Center" Width="400" Height="225">
             <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Content="Nazwa użytkownika: " />
+                <TextBox Grid.Row="1" Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Grid.Row="2" Content="Hasło: " />
+                <TextBox Grid.Row="3" Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Button Grid.Row="4" Content="Zaloguj się" Command="{Binding LoginCommand}" />
+                <Label Grid.Row="5" Content="{Binding Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
         </Border>
     </Grid>

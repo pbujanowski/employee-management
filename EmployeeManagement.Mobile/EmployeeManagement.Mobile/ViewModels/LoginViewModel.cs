@@ -1,4 +1,7 @@
-﻿using EmployeeManagement.Mobile.Communication;
+﻿using EmployeeManagement.Core.Dtos;
+using EmployeeManagement.Mobile.Communication;
+using EmployeeManagement.Mobile.Services;
+using EmployeeManagement.Services.Interfaces;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -8,6 +11,7 @@ namespace EmployeeManagement.Mobile.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
+        private readonly IUserService<UserDto, AuthenticationDto> userService = DependencyService.Get<IUserService<UserDto, AuthenticationDto>>();
         private string userName;
         private string password;
         private string info;
@@ -44,13 +48,22 @@ namespace EmployeeManagement.Mobile.ViewModels
         {
             try
             {
-                await Task.CompletedTask;
-                Info = "Zalogowano";
-                MessagingCenter.Send<LoginViewModel>(this, Message.CloseLoginPage);
+                Info = "Proszę czekać...";
+
+                var auth = new AuthenticationDto { Username = UserName, Password = Password };
+                var user = await userService.LoginAsync(auth);
+                if (user != null)
+                {
+                    Session.User = user;
+                    Info = "Zalogowano";
+                    MessagingCenter.Send(this, Message.CloseLoginPage);
+                }
+                else
+                    throw new Exception("Wprowadzono nieprawidłowe dane!");
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                MessageService.DisplayAlert(this, ex.Message);
                 Info = "Błąd!";
             }
         }

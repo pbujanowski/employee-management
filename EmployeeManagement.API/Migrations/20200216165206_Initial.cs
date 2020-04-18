@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EmployeeManagement.API.Migrations
 {
@@ -13,7 +12,7 @@ namespace EmployeeManagement.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -26,7 +25,7 @@ namespace EmployeeManagement.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: true)
                 },
@@ -40,7 +39,7 @@ namespace EmployeeManagement.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Code = table.Column<string>(nullable: false),
                     Value = table.Column<string>(nullable: false)
                 },
@@ -54,7 +53,7 @@ namespace EmployeeManagement.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(maxLength: 50, nullable: false),
                     LastName = table.Column<string>(maxLength: 50, nullable: false),
                     Address = table.Column<string>(nullable: true),
@@ -85,11 +84,12 @@ namespace EmployeeManagement.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(nullable: false),
                     ExecutiveEmployeeId = table.Column<int>(nullable: false),
                     OrderDate = table.Column<DateTime>(nullable: false),
                     Deadline = table.Column<DateTime>(nullable: true),
+                    BeginDate = table.Column<DateTime>(nullable: true),
                     EndDate = table.Column<DateTime>(nullable: true),
                     IsDone = table.Column<bool>(nullable: false)
                 },
@@ -109,7 +109,7 @@ namespace EmployeeManagement.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: false),
                     EmployeeId = table.Column<int>(nullable: false),
@@ -134,7 +134,7 @@ namespace EmployeeManagement.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeId = table.Column<int>(nullable: false),
                     Start = table.Column<DateTime>(nullable: true),
                     End = table.Column<DateTime>(nullable: true)
@@ -144,6 +144,28 @@ namespace EmployeeManagement.API.Migrations
                     table.PrimaryKey("PK_ScheduleEntries", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ScheduleEntries_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Username = table.Column<string>(nullable: false),
+                    Password = table.Column<string>(nullable: false),
+                    Role = table.Column<string>(nullable: false),
+                    EmployeeId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_Employees_EmployeeId",
                         column: x => x.EmployeeId,
                         principalTable: "Employees",
                         principalColumn: "Id",
@@ -163,19 +185,29 @@ namespace EmployeeManagement.API.Migrations
             migrationBuilder.InsertData(
                 table: "Employees",
                 columns: new[] { "Id", "Address", "CityId", "EmploymentDate", "FirstName", "JobId", "LastName", "PostalCode" },
-                values: new object[,]
-                {
-                    { 1, null, 1, new DateTime(2020, 2, 5, 10, 28, 9, 948, DateTimeKind.Local).AddTicks(615), "Jan", 1, "Kowalski", null },
-                    { 2, null, 1, new DateTime(2020, 2, 5, 10, 28, 9, 953, DateTimeKind.Local).AddTicks(8083), "Janina", 1, "Kowalska", null }
-                });
+                values: new object[] { 1, null, 1, new DateTime(2020, 2, 16, 17, 52, 6, 202, DateTimeKind.Local).AddTicks(8613), "Jan", 1, "Kowalski", null });
+
+            migrationBuilder.InsertData(
+                table: "Employees",
+                columns: new[] { "Id", "Address", "CityId", "EmploymentDate", "FirstName", "JobId", "LastName", "PostalCode" },
+                values: new object[] { 2, null, 1, new DateTime(2020, 2, 16, 17, 52, 6, 209, DateTimeKind.Local).AddTicks(5568), "Janina", 1, "Kowalska", null });
 
             migrationBuilder.InsertData(
                 table: "Duties",
-                columns: new[] { "Id", "Deadline", "Description", "EndDate", "ExecutiveEmployeeId", "IsDone", "OrderDate" },
+                columns: new[] { "Id", "BeginDate", "Deadline", "Description", "EndDate", "ExecutiveEmployeeId", "IsDone", "OrderDate" },
                 values: new object[,]
                 {
-                    { 1, null, "Zadanie nr 1", null, 1, false, new DateTime(2020, 2, 5, 10, 28, 9, 954, DateTimeKind.Local).AddTicks(1344) },
-                    { 2, null, "Zadanie nr 2", null, 1, false, new DateTime(2020, 2, 5, 10, 28, 9, 954, DateTimeKind.Local).AddTicks(7420) }
+                    { 1, null, null, "Zadanie nr 1", null, 1, false, new DateTime(2020, 2, 16, 17, 52, 6, 210, DateTimeKind.Local).AddTicks(4931) },
+                    { 2, null, null, "Zadanie nr 2", null, 1, false, new DateTime(2020, 2, 16, 17, 52, 6, 211, DateTimeKind.Local).AddTicks(2032) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "EmployeeId", "Password", "Role", "Username" },
+                values: new object[,]
+                {
+                    { 1, 1, "test123", "Administrator", "jkowalski" },
+                    { 2, 2, "test123", "User", "jkowalska" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -202,6 +234,11 @@ namespace EmployeeManagement.API.Migrations
                 name: "IX_ScheduleEntries_EmployeeId",
                 table: "ScheduleEntries",
                 column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_EmployeeId",
+                table: "Users",
+                column: "EmployeeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -217,6 +254,9 @@ namespace EmployeeManagement.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "ScheduleEntries");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Employees");

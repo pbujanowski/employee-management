@@ -13,22 +13,21 @@ namespace EmployeeManagement.Desktop.ViewModels
 {
     public class EmployeeViewModel : ViewModelBase
     {
-        private string title;
+        private string info;
         private Employee employee = new Employee();
         private ObservableCollection<City> cities;
-        private readonly IViewService viewService = ViewService.Instance;
         private readonly IEmployeeService<Employee> employeeService = new EmployeeService();
         private readonly ICityService<City> cityService = new CityService();
         private readonly IJobService<Job> jobService = new JobService();
         private DataMode dataMode;
 
-        public string Title
+        public string Info 
         {
-            get { return title; }
+            get { return info; }
             set
             {
-                title = value;
-                NotifyPropertyChanged(nameof(Title));
+                info = value;
+                NotifyPropertyChanged(nameof(Info));
             }
         }
 
@@ -167,6 +166,8 @@ namespace EmployeeManagement.Desktop.ViewModels
         {
             try
             {
+                Info = "Proszę czekać...";
+
                 switch (dataMode)
                 {
                     case DataMode.Add:
@@ -179,10 +180,13 @@ namespace EmployeeManagement.Desktop.ViewModels
                         CloseCommand.Execute(null);
                         break;
                 }
+
+                Info = "Gotowe!";
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Info = "Błąd!";
+                MessageService.ShowError(ex.Message);
             }
         }
 
@@ -195,6 +199,8 @@ namespace EmployeeManagement.Desktop.ViewModels
         {
             try
             {
+                Info = "Proszę czekać...";
+
                 var cities = await cityService.GetAllAsync();
                 if (this.Cities == null)
                     this.Cities = new ObservableCollection<City>();
@@ -205,10 +211,13 @@ namespace EmployeeManagement.Desktop.ViewModels
                     this.Cities.Add(city);
 
                 City = Cities.First();
+
+                Info = "Gotowe!";
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Info = "Błąd!";
+                MessageService.ShowError(ex.Message);
             }
         }
 
@@ -216,6 +225,8 @@ namespace EmployeeManagement.Desktop.ViewModels
         {
             try
             {
+                Info = "Proszę czekać...";
+
                 var jobs = await jobService.GetAllAsync();
                 if (this.Jobs == null)
                     this.Jobs = new ObservableCollection<Job>();
@@ -224,9 +235,12 @@ namespace EmployeeManagement.Desktop.ViewModels
 
                 foreach (var job in jobs)
                     this.Jobs.Add(job);
+
+                Info = "Gotowe!";
             }
             catch (Exception ex)
             {
+                Info = "Błąd!";
                 MessageBox.Show(ex.Message);
             }
         }

@@ -12,10 +12,20 @@ namespace EmployeeManagement.Desktop.ViewModels
     public class EmployeesViewModel : ViewModelBase
     {
         private readonly IEmployeeService<Employee> employeeService = new EmployeeService();
-        private readonly IViewService viewService = ViewService.Instance;
         private ObservableCollection<Employee> employees;
         private Employee selectedEmployee;
-        //private readonly IDialogService dialogService;
+        private string info;
+
+        public string Info 
+        {
+            get { return info; }
+            set
+            {
+                info = value;
+                NotifyPropertyChanged(nameof(Info));
+            }
+        }
+
 
         public ObservableCollection<Employee> Employees
         {
@@ -50,6 +60,8 @@ namespace EmployeeManagement.Desktop.ViewModels
         {
             try
             {
+                Info = "Proszę czekać...";
+
                 if (Employees == null)
                     Employees = new ObservableCollection<Employee>();
 
@@ -61,9 +73,12 @@ namespace EmployeeManagement.Desktop.ViewModels
                     foreach (var employee in employees)
                         Employees.Add(employee);
                 });
+
+                Info = "Gotowe!";
             }
             catch (Exception ex)
             {
+                Info = "Błąd!";
                 MessageBox.Show(ex.Message);
             }
         }
@@ -83,7 +98,7 @@ namespace EmployeeManagement.Desktop.ViewModels
             //this.dialogService = dialogService;
             RefreshEmployeesListCommand = new RelayCommand<object>(RefreshEmployeesList);
             AddEmployeeCommand = new RelayCommand<object>(AddEmployee);
-            EditEmployeeCommand = new RelayCommand<object>(EditEmployee);
+            EditEmployeeCommand = new RelayCommand<object>(EditEmployee, (obj) => CanEditEmployee);
         }
     }
 }

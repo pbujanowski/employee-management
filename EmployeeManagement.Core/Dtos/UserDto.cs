@@ -11,6 +11,9 @@ namespace EmployeeManagement.Core.Dtos
         [JsonProperty]
         public string Username { get; set; }
 
+        [JsonProperty]
+        public string Role { get; set; }
+
         [JsonProperty(ItemIsReference = true)]
         public Employee Employee { get; set; }
 

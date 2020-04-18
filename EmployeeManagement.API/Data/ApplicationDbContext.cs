@@ -11,6 +11,22 @@ namespace EmployeeManagement.API.Data
         {
         }
 
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<Employee> Employees { get; set; }
+
+        public DbSet<Duty> Duties { get; set; }
+
+        public DbSet<City> Cities { get; set; }
+
+        public DbSet<Job> Jobs { get; set; }
+
+        public DbSet<Report> Reports { get; set; }
+
+        public DbSet<ReportTemplate> ReportTemplates { get; set; }
+
+        public DbSet<ScheduleEntry> ScheduleEntries { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<City>().HasData(
@@ -79,21 +95,5 @@ namespace EmployeeManagement.API.Data
                     ExecutiveEmployeeId = 1,
                 });
         }
-
-        public DbSet<User> Users { get; set; }
-
-        public DbSet<Employee> Employees { get; set; }
-
-        public DbSet<Duty> Duties { get; set; }
-
-        public DbSet<City> Cities { get; set; }
-
-        public DbSet<Job> Jobs { get; set; }
-
-        public DbSet<Report> Reports { get; set; }
-
-        public DbSet<ReportTemplate> ReportTemplates { get; set; }
-
-        public DbSet<ScheduleEntry> ScheduleEntries { get; set; }
     }
 }

@@ -29,6 +29,9 @@ namespace EmployeeManagement.Core.Models
         public DateTime? Deadline { get; set; }
 
         [JsonProperty]
+        public DateTime? BeginDate { get; set; }
+
+        [JsonProperty]
         public DateTime? EndDate { get; set; }
 
         [Required]
@@ -39,6 +42,7 @@ namespace EmployeeManagement.Core.Models
         {
             OrderDate = DateTime.Now;
             Deadline = null;
+            BeginDate = null;
             EndDate = null;
             IsDone = false;
         }

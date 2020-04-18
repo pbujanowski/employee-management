@@ -10,6 +10,7 @@ namespace EmployeeManagement.Mobile
             InitializeComponent();
 
             DependencyService.Register<DutyService>();
+            DependencyService.Register<UserService>();
             MainPage = new AppShell();
         }
 

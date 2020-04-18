@@ -21,6 +21,11 @@ namespace EmployeeManagement.Mobile.Views
             {
                 await Navigation.PopModalAsync();
             });
+
+            MessagingCenter.Subscribe<LoginViewModel, string>(this, Message.DisplayAlert, async (obj, args) =>
+            {
+                await DisplayAlert("Komunikat", args, "OK");
+            });
         }
     }
 }

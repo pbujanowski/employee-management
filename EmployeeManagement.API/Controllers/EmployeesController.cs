@@ -33,7 +33,7 @@ namespace EmployeeManagement.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Employee>> GetEmployee(int id)
         {
-            var employee = await context.Employees.FindAsync(id).ConfigureAwait(false);
+            var employee = await employeeService.GetOneByIdAsync(id).ConfigureAwait(false);
 
             if (employee == null)
             {

@@ -9,6 +9,8 @@ namespace EmployeeManagement.Desktop.ViewModels
         private ObservableCollection<Report> reports;
         private Report selectedReport;
 
+        public override string Title => "Raporty";
+
         public ObservableCollection<Report> Reports
         {
             get { return reports; }

@@ -8,9 +8,13 @@
              Title="{Binding Title}">
 
     <StackLayout Spacing="20" Padding="15">
-        <Label Text="Text:" FontSize="Medium" />
+        <Label Text="Opis zadania:" FontSize="Medium" />
         <Label Text="{Binding Duty.Description}" d:Text="Opis zadania" FontSize="Small" />
-        <Label Text="Description:" FontSize="Medium" />
+        <Label Text="Data utworzenia:" FontSize="Medium" />
         <Label Text="{Binding Duty.OrderDate}" d:Text="Data utworzenia" FontSize="Small" />
+        <Label Text="{Binding Duty.BeginDate}" FontSize="Small" />
+        <Button Text="Rozpocznij zadanie" Command="{Binding BeginDutyCommand}" />
+        <Button Text="Zakończ zadanie" Command="{Binding EndDutyCommand}" />
+        <Label Text="{Binding Info}" />
     </StackLayout>
 </ContentPage>

@@ -20,7 +20,7 @@
                 <Button Grid.Column="1" Command="{Binding LoginOrLogoutCommand}" Content="{Binding LoginOrLogoutButtonCaption, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Margin="3" />
             </Grid>
         </Border>
-        <TabControl DockPanel.Dock="Top" Margin="3" Padding="6">
+        <TabControl DockPanel.Dock="Top" Margin="3" Padding="6" IsEnabled="{Binding CanNavigate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <TabItem Header="Pracownicy">
                 <ContentControl>
                     <vm:EmployeesViewModel />
@@ -36,7 +36,7 @@
                     <vm:ScheduleViewModel />
                 </ContentControl>
             </TabItem>
-            <TabItem Header="Raporty">
+            <!--<TabItem Header="Raporty">
                 <ContentControl>
                     <vm:ReportsViewModel />
                 </ContentControl>
@@ -45,7 +45,7 @@
                 <ContentControl>
                     <vm:ReportTemplatesViewModel />
                 </ContentControl>
-            </TabItem>
+            </TabItem>-->
         </TabControl>
     </DockPanel>
 </Window>

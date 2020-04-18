@@ -22,10 +22,10 @@ namespace EmployeeManagement.API.Controllers
 
         // GET: api/Cities
         [HttpGet]
-        public async Task<ActionResult<string>> Get()
+        public async Task<IActionResult> Get()
         {
             var cities = await cityService.GetAllAsync().ConfigureAwait(false);
-            return JsonConvert.SerializeObject(cities);
+            return Ok(JsonConvert.SerializeObject(cities));
         }
 
         // GET: api/Cities/5

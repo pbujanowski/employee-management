@@ -8,6 +8,8 @@ namespace EmployeeManagement.Desktop.ViewModels
         private readonly ReportTemplate template = new ReportTemplate();
         private string previewValue;
 
+        public override string Title => "Szablon raportu";
+
         public string Code
         {
             get { return template.Code; }

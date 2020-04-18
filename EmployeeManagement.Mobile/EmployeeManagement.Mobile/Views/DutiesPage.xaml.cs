@@ -1,4 +1,5 @@
 ﻿using EmployeeManagement.Core.Models;
+using EmployeeManagement.Mobile.Communication;
 using EmployeeManagement.Mobile.ViewModels;
 using System.ComponentModel;
 using Xamarin.Forms;
@@ -17,7 +18,7 @@ namespace EmployeeManagement.Mobile.Views
             InitializeComponent();
 
             BindingContext = viewModel = new DutiesViewModel();
-            MessagingCenter.Subscribe<DutiesViewModel, string>(this, "DisplayAlert", async (obj, message) =>
+            MessagingCenter.Subscribe<DutiesViewModel, string>(this, Message.DisplayAlert, async (obj, message) =>
             {
                 await DisplayAlert("Komunikat", message, "OK");
             });

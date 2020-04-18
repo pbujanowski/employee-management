@@ -28,8 +28,9 @@
                 <TextBlock Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="0" />
 
                 <Label Content="Pracownik: " Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Center" />
-                <ComboBox ItemsSource="{Binding Employees, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                <ComboBox ItemsSource="{Binding Employees}"
                           SelectedItem="{Binding ExecutiveEmployee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="1" DisplayMemberPath="{Binding FullName}" />
+                <Button Content="Wczytaj" Grid.Column="2" Grid.Row="1" Command="{Binding GetEmployeesCommand}" VerticalAlignment="Center" />
 
                 <Label Content="Data utworzenia: " Grid.Column="0" Grid.Row="2" VerticalContentAlignment="Center" />
                 <DatePicker SelectedDate="{Binding OrderDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="2" />
@@ -39,13 +40,19 @@
                 <CheckBox Content="nie uwzględniaj" IsChecked="{Binding CanDeadline, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" />
             </Grid>
         </GroupBox>
+        
         <Grid VerticalAlignment="Bottom">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Button Content="Akceptuj" Grid.Column="0" Command="{Binding AcceptDutyCommand}" Margin="6" />
-            <Button Content="Anuluj" Grid.Column="1" Command="{Binding CancelDutyCommand}" Margin="6" />
+            <Label HorizontalContentAlignment="Center" Grid.Row="0" Grid.ColumnSpan="2" Content="{Binding Info, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Content="Akceptuj" Grid.Column="0" Grid.Row="1" Command="{Binding AcceptDutyCommand}" Margin="6" />
+            <Button Content="Anuluj" Grid.Column="1" Grid.Row="1" Command="{Binding CloseCommand}" Margin="6" />
         </Grid>
     </Grid>
 </Window>

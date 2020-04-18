@@ -11,6 +11,8 @@ namespace EmployeeManagement.Desktop.ViewModels
         private ObservableCollection<ScheduleEntry> scheduleEntries;
         private ScheduleEntry selectedEntry;
 
+        public override string Title => "Harmonogram";
+
         public ObservableCollection<ScheduleEntry> ScheduleEntries
         {
             get { return scheduleEntries; }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EmployeeManagement.API.Data;
 using EmployeeManagement.Core.Dtos;
+using EmployeeManagement.Core.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -26,10 +27,18 @@ namespace EmployeeManagement.API.Services
 
         public UserDto Authenticate(string username, string password)
         {
-            var user = dbContext.Users.SingleOrDefault(u => u.Username == username && u.Password == password);
+            var user = dbContext.Users
+                .Where(u => u.Username == username && u.Password == password)
+                .SingleOrDefault();
 
             if (user == null)
                 return null;
+
+            var employee = dbContext.Employees
+                .Where(e => e.Id == user.EmployeeId)
+                .SingleOrDefault();
+
+            user.Employee = employee;
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(configuration.GetValue<string>("Jwt:Key"));

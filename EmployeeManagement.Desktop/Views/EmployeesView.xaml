@@ -15,9 +15,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="40" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <GroupBox Grid.Row="0" Margin="3" Padding="6">
+        <GroupBox Grid.Row="0" Margin="3">
             <Label Content="Lista pracowników" HorizontalContentAlignment="Center" FontSize="18" />
         </GroupBox>
         <ListView Grid.Row="1" ItemsSource="{Binding Employees}" SelectedItem="{Binding SelectedEmployee}">
@@ -28,12 +28,20 @@
             </i:Interaction.Triggers>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Imię i nazwisko" DisplayMemberBinding="{Binding FullName}" />
-                    <GridViewColumn Header="Stanowisko" DisplayMemberBinding="{Binding Job}" />
+                    <GridViewColumn Header="Imię" DisplayMemberBinding="{Binding FirstName}" />
+                    <GridViewColumn Header="Nazwisko" DisplayMemberBinding="{Binding LastName}" />
+                    <GridViewColumn Header="Adres zamieszkania" DisplayMemberBinding="{Binding Address}" />
+                    <GridViewColumn Header="Miasto" DisplayMemberBinding="{Binding City.Name}" />
+                    <GridViewColumn Header="Kod pocztowy" DisplayMemberBinding="{Binding PostalCode}" />
+                    <GridViewColumn Header="Data zatrudnienia" DisplayMemberBinding="{Binding EmploymentDate}" />
                 </GridView>
             </ListView.View>
         </ListView>
         <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -42,8 +50,9 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="2" Content="Dodaj pracownika..." Command="{Binding AddEmployeeCommand}" Margin="3" />
-            <Button Grid.Column="3" Content="Odśwież listę" Command="{Binding RefreshEmployeesListCommand}" Margin="3" />
+            <Label Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="0" Content="{Binding Info, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" />
+            <Button Grid.Column="2" Grid.Row="1" Content="Dodaj pracownika..." Command="{Binding AddEmployeeCommand}" Margin="3" />
+            <Button Grid.Column="3" Grid.Row="1" Content="Odśwież listę" Command="{Binding RefreshEmployeesListCommand}" Margin="3" />
         </Grid>
     </Grid>
 </UserControl>

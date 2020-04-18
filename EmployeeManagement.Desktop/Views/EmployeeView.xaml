@@ -64,7 +64,9 @@
                     </Grid>
                 </GroupBox>
             </Border>
+            <Label DockPanel.Dock="Bottom" HorizontalContentAlignment="Center" Content="{Binding Info, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
         </DockPanel>
+        
         <Border VerticalAlignment="Bottom">
             <Grid Height="50">
                 <Grid.ColumnDefinitions>

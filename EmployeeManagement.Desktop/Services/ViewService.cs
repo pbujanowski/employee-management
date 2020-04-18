@@ -17,6 +17,7 @@ namespace EmployeeManagement.Desktop.Services
         private EmployeeView employeeView;
         private ReportTemplateDesignerView reportTemplateDesignerView;
         private DutyView dutyView;
+        private LoginView loginView;
 
         public void ShowDialog(string viewModelName)
         {
@@ -39,6 +40,12 @@ namespace EmployeeManagement.Desktop.Services
                     dutyView.Owner = App.Current.MainWindow;
                     dutyView.ShowDialog();
                     break;
+
+                case nameof(LoginViewModel):
+                    loginView = new LoginView();
+                    loginView.Owner = App.Current.MainWindow;
+                    loginView.ShowDialog();
+                    break;
             }
         }
 
@@ -51,6 +58,13 @@ namespace EmployeeManagement.Desktop.Services
                     employeeView.Owner = App.Current.MainWindow;
                     employeeView.DataContext = new EmployeeViewModel((Employee)parameter);
                     employeeView.ShowDialog();
+                    break;
+
+                case nameof(DutyViewModel):
+                    dutyView = new DutyView();
+                    dutyView.Owner = App.Current.MainWindow;
+                    dutyView.DataContext = new DutyViewModel((Duty)parameter);
+                    dutyView.ShowDialog();
                     break;
             }
         }
@@ -69,6 +83,10 @@ namespace EmployeeManagement.Desktop.Services
 
                 case nameof(DutyViewModel):
                     dutyView.Close();
+                    break;
+
+                case nameof(LoginViewModel):
+                    loginView.Close();
                     break;
             }
         }

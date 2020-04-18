@@ -1,4 +1,8 @@
-﻿using System;
+﻿using EmployeeManagement.Core.Dtos;
+using EmployeeManagement.Desktop.Services;
+using EmployeeManagement.Services.Implementations;
+using EmployeeManagement.Services.Interfaces;
+using System;
 using System.Windows;
 using System.Windows.Input;
 
@@ -6,11 +10,13 @@ namespace EmployeeManagement.Desktop.ViewModels
 {
     public class LoginViewModel : ViewModelBase
     {
-        //private readonly IUserService<User> userService;
+        private readonly IUserService<UserDto, AuthenticationDto> userService = new UserService();
         private string userName;
 
         private string password;
-        private string errorMessage;
+        private string info;
+
+        public override string Title => "Logowanie";
 
         public string UserName
         {
@@ -32,32 +38,37 @@ namespace EmployeeManagement.Desktop.ViewModels
             }
         }
 
-        public string ErrorMessage
+        public string Info
         {
-            get { return errorMessage; }
+            get { return info; }
             set
             {
-                errorMessage = value;
-                NotifyPropertyChanged(nameof(ErrorMessage));
+                info = value;
+                NotifyPropertyChanged(nameof(Info));
             }
         }
 
         public ICommand LoginCommand { get; private set; }
 
-        public ICommand CancelCommand { get; private set; }
+        public ICommand CloseCommand { get; private set; }
 
-        private async void Login()
+        public bool CanLogin { get { return !string.IsNullOrWhiteSpace(UserName) && !string.IsNullOrWhiteSpace(Password); } }
+
+        private async void Login(object parameter)
         {
             try
             {
-                //var user = await userService.LoginAsync(new User { UserName = UserName, Password = Password }); ;
-                //if (user != null)
-                //{
-                //    App.CurrentUser = user;
-                //    //RaiseRequestClose(new DialogResult());
-                //}
-                //else
-                //    ErrorMessage = "Wprowadzone dane są nieprawidłowe!";
+                Info = "Proszę czekać...";
+
+                var user = await userService.LoginAsync(new AuthenticationDto { Username = UserName, Password = Password });
+                if (user != null)
+                {
+                    Session.User = user;
+                    CloseCommand.Execute(null);
+                }
+                else
+                    Info = "Wprowadzone dane są nieprawidłowe!";
+                
             }
             catch (Exception ex)
             {
@@ -65,9 +76,15 @@ namespace EmployeeManagement.Desktop.ViewModels
             }
         }
 
-        private void Cancel()
+        private void Close(object parameter)
         {
-            Application.Current.Shutdown();
+            viewService.CloseDialog(nameof(LoginViewModel));
+        }
+
+        public LoginViewModel()
+        {
+            LoginCommand = new RelayCommand<object>(Login);
+            CloseCommand = new RelayCommand<object>(Close);
         }
     }
 }

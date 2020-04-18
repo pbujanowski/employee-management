@@ -1,10 +1,37 @@
-﻿using System.ComponentModel;
+﻿using EmployeeManagement.Desktop.Services;
+using System.ComponentModel;
 
 namespace EmployeeManagement.Desktop.ViewModels
 {
-    public class ViewModelBase : INotifyPropertyChanged, IDataErrorInfo
+    public abstract class ViewModelBase : INotifyPropertyChanged, IDataErrorInfo
     {
+        protected readonly IViewService viewService = ViewService.Instance;
+
+        protected bool isBusy;
+
+        protected string title;
+
         public string Error => null;
+
+        public virtual string Title 
+        {
+            get { return title; }
+            set
+            {
+                title = value;
+                NotifyPropertyChanged(nameof(Title));
+            }
+        }
+
+        public bool IsBusy
+        {
+            get { return isBusy; }
+            set
+            {
+                isBusy = value;
+                NotifyPropertyChanged(nameof(IsBusy));
+            }
+        }
 
         public string this[string columnName] => ValidateProperty(columnName);
 

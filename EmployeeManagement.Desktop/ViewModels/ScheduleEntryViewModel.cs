@@ -11,6 +11,8 @@ namespace EmployeeManagement.Desktop.ViewModels
         private readonly IScheduleService<ScheduleEntry> scheduleService = new ScheduleService();
         private readonly ScheduleEntry scheduleEntry = new ScheduleEntry();
 
+        public override string Title => "Wpis w harmonogramie";
+
         public Employee SelectedEmployee
         {
             get { return scheduleEntry.Employee; }

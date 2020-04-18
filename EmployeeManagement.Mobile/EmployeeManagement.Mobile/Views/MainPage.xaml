@@ -8,7 +8,7 @@
              Title="{Binding Title}">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Strona główna"
+            <Label Text="{Binding Status}"
                 VerticalOptions="CenterAndExpand"
                 HorizontalOptions="CenterAndExpand" />
             <Button Text="Zaloguj się" Command="{Binding LoginCommand}" />

@@ -1,19 +1,33 @@
 ﻿using EmployeeManagement.Core.Models;
+using EmployeeManagement.Desktop.Enums;
 using EmployeeManagement.Desktop.Services;
 using EmployeeManagement.Services.Implementations;
 using EmployeeManagement.Services.Interfaces;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 
 namespace EmployeeManagement.Desktop.ViewModels
 {
     public class DutyViewModel : ViewModelBase
     {
-        private IViewService viewService = ViewService.Instance;
         private IDutyService<Duty> dutyService = new DutyService();
+        private IEmployeeService<Employee> employeeService = new EmployeeService();
         private Duty duty = new Duty();
         private bool canDeadline;
+        private string info;
+        private DataMode dataMode;
+
+        public string Info 
+        {
+            get { return info; }
+            set
+            {
+                info = value;
+                NotifyPropertyChanged(nameof(Info));
+            }
+        }
 
         public string Description
         {
@@ -70,33 +84,101 @@ namespace EmployeeManagement.Desktop.ViewModels
 
         public ICommand AcceptDutyCommand { get; private set; }
 
-        public ICommand CancelDutyCommand { get; private set; }
+        public ICommand CloseCommand { get; private set; }
 
         public bool CanAcceptDutyCommand(bool parameter)
         {
             return true;
         }
 
-        public bool CanCancelDutyCommand { get { return true; } }
+        public bool CanCloseCommand { get { return true; } }
+
+        private void SetAddMode()
+        {
+            Title = "Dodaj obowiązek";
+            dataMode = DataMode.Add;
+        }
+
+        private void SetEditMode(Duty duty)
+        {
+            Title = "Edytuj obowiązek";
+            dataMode = DataMode.Edit;
+            this.duty = duty;
+        }
 
         private async void GetEmployees(object parameter)
         {
+            try
+            {
+                Info = "Proszę czekać...";
+
+                var employees = await employeeService.GetAllAsync();
+                if (this.Employees == null)
+                    this.Employees = new ObservableCollection<Employee>();
+                else
+                    this.Employees.Clear();
+
+                foreach (var employee in employees)
+                    this.Employees.Add(employee);
+
+                ExecutiveEmployee = Employees.First();
+
+                Info = "Gotowe!";
+            }
+            catch (Exception ex)
+            {
+                Info = "Błąd!";
+                MessageService.ShowError(ex.Message);
+            }
         }
 
         private async void AcceptDuty(object parameter)
         {
+            try
+            {
+                Info = "Proszę czekać...";
+
+                switch (dataMode)
+                {
+                    case DataMode.Add:
+                        await dutyService.AddOneAsync(duty);
+                        CloseCommand.Execute(null);
+                        break;
+                    case DataMode.Edit:
+                        await dutyService.UpdateOneAsync(duty);
+                        CloseCommand.Execute(null);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Info = "Błąd!";
+                MessageService.ShowError(ex.Message);
+            }
         }
 
-        private void CancelDuty(object parameter)
+        private void Close(object parameter)
         {
             viewService.CloseDialog(nameof(DutyViewModel));
         }
 
-        public DutyViewModel()
+        private void Initialize()
         {
             GetEmployeesCommand = new RelayCommand<object>(GetEmployees);
             AcceptDutyCommand = new RelayCommand<object>(AcceptDuty);
-            CancelDutyCommand = new RelayCommand<object>(CancelDuty);
+            CloseCommand = new RelayCommand<object>(Close);
+        }
+
+        public DutyViewModel()
+        {
+            Initialize();
+            SetAddMode();
+        }
+
+        public DutyViewModel(Duty duty)
+        {
+            Initialize();
+            SetEditMode(duty);
         }
     }
 }

@@ -2,11 +2,11 @@
 
 namespace EmployeeManagement.Services.Interfaces
 {
-    public interface IUserService<T>
+    public interface IUserService<TUserDto, TAuthDto>
     {
-        Task<T> LoginAsync(T user);
+        Task<TUserDto> LoginAsync(TAuthDto user);
 
-        Task<T> RegisterAsync(T user);
+        Task<TUserDto> RegisterAsync(TUserDto user);
 
         Task<bool> LogoutAsync(int id);
     }

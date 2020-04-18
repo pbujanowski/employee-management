@@ -1,4 +1,6 @@
 ﻿using EmployeeManagement.Core.Models;
+using EmployeeManagement.Mobile.Communication;
+using EmployeeManagement.Mobile.Services;
 using EmployeeManagement.Services.Interfaces;
 using System;
 using System.Collections.ObjectModel;
@@ -14,18 +16,13 @@ namespace EmployeeManagement.Mobile.ViewModels
         public ObservableCollection<Duty> Duties { get; set; }
         public Command LoadItemsCommand { get; set; }
 
+        public bool CanExecuteLoadItemsCommand { get { return Session.User != null; } }
+
         public DutiesViewModel()
         {
             Title = "Zadania";
             Duties = new ObservableCollection<Duty>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
-
-            //MessagingCenter.Subscribe<NewItemPage, Duty>(this, "AddItem", async (obj, duty) =>
-            //{
-            //    var newDuty = duty as Duty;
-            //    Duties.Add(newDuty);
-            //    await DataStore.AddItemAsync(newDuty);
-            //});
+            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand(), () => CanExecuteLoadItemsCommand);
         }
 
         private async Task ExecuteLoadItemsCommand()
@@ -38,7 +35,8 @@ namespace EmployeeManagement.Mobile.ViewModels
             try
             {
                 Duties.Clear();
-                var duties = await dutyService.GetAllByEmployeeIdAsync(Session.User.Employee.Id);
+                //var duties = await dutyService.GetAllByEmployeeIdAsync(Session.User.Employee.Id);
+                var duties = await dutyService.GetAllAsync();
                 foreach (var duty in duties)
                 {
                     Duties.Add(duty);
@@ -46,8 +44,7 @@ namespace EmployeeManagement.Mobile.ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
-                MessagingCenter.Send(this, "DisplayAlert", ex.Message);
+                MessageService.DisplayAlert(this, ex.Message);
             }
             finally
             {
